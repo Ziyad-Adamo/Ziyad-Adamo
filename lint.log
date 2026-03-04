@@ -1,0 +1,20 @@
+
+D:\Projectos\Portifolio online\components\sections\About.tsx
+  36:141  error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+
+D:\Projectos\Portifolio online\components\sections\Contact.tsx
+  13:91  error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+  15:26  error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+  16:26  error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+
+D:\Projectos\Portifolio online\components\sections\Experience.tsx
+  43:64  error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+
+D:\Projectos\Portifolio online\components\sections\Projects.tsx
+  6:10  warning  'Badge' is defined but never used  @typescript-eslint/no-unused-vars
+
+D:\Projectos\Portifolio online\components\ui\Timeline.tsx
+  21:5  warning  'isLast' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+Γ£û 7 problems (5 errors, 2 warnings)
+

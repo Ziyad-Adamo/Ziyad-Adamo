@@ -1,0 +1,23 @@
+
+> tmp-app@0.1.0 build
+> next build
+
+Γû▓ Next.js 16.1.6 (Turbopack)
+
+  Creating an optimized production build ...
+Γ£ô Compiled successfully in 3.6s
+  Running TypeScript ...
+Failed to compile.
+
+./components/layout/Header.tsx:57:59
+Type error: Type '{ children: Element; variant: "ghost"; size: "sm"; asChild: true; }' is not assignable to type 'IntrinsicAttributes & ButtonProps & RefAttributes<HTMLButtonElement>'.
+  Property 'asChild' does not exist on type 'IntrinsicAttributes & ButtonProps & RefAttributes<HTMLButtonElement>'.
+
+  55 |                             </Link>
+  56 |                         ))}
+> 57 |                         <Button variant="ghost" size="sm" asChild>
+     |                                                           ^
+  58 |                             <a href="/cv-ziyad-adamo.pdf" download>
+  59 |                                 Resume
+  60 |                             </a>
+Next.js build worker exited with code: 1 and signal: null
