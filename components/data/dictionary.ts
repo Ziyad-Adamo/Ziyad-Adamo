@@ -35,7 +35,7 @@ export const profileDictionary: Record<string, ProfileData> = {
             quickFacts: [
                 { label: "Localização", value: "Maputo" },
                 { label: "Idiomas", value: "Português, Inglês" },
-                { label: "Áreas Chave", value: "IoT, Redes, Automação, Energia" },
+                { label: "Áreas Chave", value: "IoT, Redes, Automação, Fluxos de IA" },
             ],
         },
         ui: {
@@ -50,6 +50,7 @@ export const profileDictionary: Record<string, ProfileData> = {
                 achievements: "Conquistas",
                 languages: "Idiomas e Qualidades",
                 contact: "Vamos Conectar",
+                process: "Como Trabalho",
             },
             educationLevels: {
                 higher: "Ensino Superior",
@@ -67,6 +68,7 @@ export const profileDictionary: Record<string, ProfileData> = {
             showLess: "Mostrar menos",
             quickLinks: "Links Rápidos",
             builtWith: "Desenhado com {heart} & Construído com Next.js",
+            footerDescription: "focado em resultados práticos de engenharia em IoT, telecomunicações, automação e fluxos de trabalho com IA.",
             footerLinks: {
                 about: "Sobre Mim",
                 experience: "Experiência",
@@ -76,7 +78,7 @@ export const profileDictionary: Record<string, ProfileData> = {
         },
         about: {
             summary:
-                "Sou licenciado em Engenharia Electrotécnica e de Telecomunicações pelo ISUTC, com bases sólidas em IoT, automação, optimização de energia e sistemas de telecomunicações. Através de estágios em radiodifusão e diagnóstico automóvel, fortaleci a minha capacidade de aplicar princípios de engenharia em ambientes operacionais reais.",
+                "Como Engenheiro Electrotécnico e de Telecomunicações, combino bases técnicas sólidas em IoT, automação e redes com fluxos de trabalho assistidos por IA para entregar soluções digitais e inovação de forma mais rápida e com maior qualidade.",
             highlights: [
                 {
                     title: "IoT e Automação",
@@ -94,6 +96,32 @@ export const profileDictionary: Record<string, ProfileData> = {
                         "Demonstrei trabalho em equipa, comunicação eficaz, liderança, flexibilidade e resolução prática de problemas em ambientes técnicos.",
                 },
             ],
+        },
+        process: {
+            title: "Fluxo de Trabalho Assistido por IA",
+            description: "Aproveito ferramentas modernas de IA para acelerar o desenvolvimento e a resolução de problemas, garantindo sempre a validação manual e a responsabilidade pelo resultado final.",
+            steps: [
+                {
+                    title: "Descobrir",
+                    subtitle: "Análise de Requisitos",
+                    description: "Compreensão de restrições técnicas e definição do problema central.",
+                },
+                {
+                    title: "Estruturar",
+                    subtitle: "Organização de Tarefas",
+                    description: "Uso de IA para debater a arquitectura e dividir requisitos em tarefas de engenharia accionáveis.",
+                },
+                {
+                    title: "Prototipar",
+                    subtitle: "Código e Construção Assistidos por IA",
+                    description: "Aceleração da geração de código, documentação e prototipagem com Claude, VS Code (Copilot) e Vercel.",
+                },
+                {
+                    title: "Validar",
+                    subtitle: "Revisão Manual e Iteração",
+                    description: "Testes rigorosos manuais, verificação operacional no mundo real e melhoria contínua.",
+                },
+            ]
         },
         experience: [
             {
@@ -239,6 +267,7 @@ export const profileDictionary: Record<string, ProfileData> = {
                 title: "Optimização de Energia Residencial com IoT",
                 description:
                     "Desenvolvi um sistema baseado em IoT para o controlo inteligente do consumo de energia residencial em tomadas e iluminação.",
+                workflow: "Workflow: C++ + Microcontroladores + Prototipagem IoT",
             },
             {
                 id: "scalable-model",
@@ -319,7 +348,7 @@ export const profileDictionary: Record<string, ProfileData> = {
         contact: {
             heading: "Vamos conectar",
             message:
-                "Se estiver a construir trabalho em IoT, telecomunicações ou automação, terei todo o gosto em conectar-me.",
+                "Se estiver a construir trabalho em IoT, telecomunicações, automação ou fluxos de trabalho com IA, terei todo o gosto em conectar-me.",
             links: [
                 { label: "Email", href: "mailto:ziyadadamo58@gmail.com" },
                 { label: "LinkedIn", href: "https://linkedin.com/in/ziyad-adamo" },

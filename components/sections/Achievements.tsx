@@ -61,7 +61,12 @@ export function Achievements() {
                                                 <p className="text-sm text-foreground/70 leading-relaxed max-w-sm">
                                                     {item.description}
                                                 </p>
-                                                <div className="mt-2 text-xs text-accent font-medium inline-flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100">
+                                                {item.workflow && (
+                                                    <p className="mt-2 text-xs font-mono text-accent/80 border-t border-accent/10 pt-2 inline-block">
+                                                        {item.workflow}
+                                                    </p>
+                                                )}
+                                                <div className="mt-3 text-xs text-accent font-medium inline-flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100">
                                                     {t.ui.viewDetails} <ArrowRight size={12} />
                                                 </div>
                                             </div>

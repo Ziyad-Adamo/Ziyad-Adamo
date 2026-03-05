@@ -6,6 +6,7 @@ import { Button } from "../ui/Button";
 import { Mail, ArrowRight, Linkedin, Copy, Check } from "lucide-react";
 import { useMemo, useState } from "react";
 import { useLanguage } from "../context/LanguageContext";
+import { BackgroundLogo } from "../ui/BackgroundLogo";
 
 export function Contact() {
     const { t } = useLanguage();
@@ -31,8 +32,9 @@ export function Contact() {
     };
 
     return (
-        <Section id="contact">
-            <Container>
+        <Section id="contact" className="relative overflow-hidden">
+            <BackgroundLogo />
+            <Container className="relative z-10">
                 <div className="max-w-3xl mx-auto text-center">
                     <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-6">{t.ui.sections.contact}</h2>
                     <p className="text-lg text-foreground/70 mb-10 leading-relaxed max-w-2xl mx-auto">

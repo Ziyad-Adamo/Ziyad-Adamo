@@ -20,6 +20,7 @@ interface TimelineItemProps {
     responsibilities?: string[];
     keyOutcomes?: string[];
     skills?: string[];
+    workflow?: string;
 }
 
 export function TimelineItem({
@@ -31,6 +32,7 @@ export function TimelineItem({
     responsibilities,
     keyOutcomes,
     skills,
+    workflow,
 }: TimelineItemProps) {
     const { t } = useLanguage();
     const { activeFilter } = useFilter();
@@ -80,6 +82,12 @@ export function TimelineItem({
                             <p className="text-foreground/60 text-sm leading-relaxed mb-4">
                                 {description}
                             </p>
+                        )}
+
+                        {workflow && (
+                            <div className="mb-4 text-xs font-mono text-accent/80 border-l-2 border-accent/30 pl-3 py-1 bg-accent/5 rounded-r-md">
+                                {workflow}
+                            </div>
                         )}
 
                         {((responsibilities && responsibilities.length > 0) || (keyOutcomes && keyOutcomes.length > 0)) && (

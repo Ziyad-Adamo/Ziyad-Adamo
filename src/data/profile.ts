@@ -21,6 +21,7 @@ export interface ExperienceItem {
   location?: string;
   responsibilities: string[];
   keyOutcomes?: string[];
+  workflow?: string;
 }
 
 export interface EducationItem {
@@ -50,6 +51,7 @@ export interface AchievementItem {
   id: string;
   title: string;
   description: string;
+  workflow?: string;
 }
 
 export interface ContactLink {
@@ -89,6 +91,7 @@ export interface ProfileData {
       achievements: string;
       languages: string;
       contact: string;
+      process: string;
     };
     educationLevels: {
       higher: string;
@@ -106,6 +109,7 @@ export interface ProfileData {
     showLess: string;
     quickLinks: string;
     builtWith: string;
+    footerDescription: string;
     footerLinks: {
       about: string;
       experience: string;
@@ -117,6 +121,11 @@ export interface ProfileData {
     summary: string;
     highlights: Highlight[];
   };
+  process: {
+    title: string;
+    description: string;
+    steps: { title: string; subtitle: string; description: string }[];
+  }
   experience: ExperienceItem[];
   education: EducationItem[];
   skills: SkillCategory[];
@@ -164,7 +173,7 @@ export const profileData: ProfileData = {
     quickFacts: [
       { label: "Location", value: "Maputo" },
       { label: "Languages", value: "Portuguese, English" },
-      { label: "Key Domains", value: "IoT, Networks, Automation, Energy" },
+      { label: "Key Domains", value: "IoT, Networks, Automation, AI Workflows" },
     ] as QuickFact[],
   },
   ui: {
@@ -179,6 +188,7 @@ export const profileData: ProfileData = {
       achievements: "Achievements",
       languages: "Languages & Qualities",
       contact: "Let's connect",
+      process: "How I Work",
     },
     educationLevels: {
       higher: "Higher Education",
@@ -196,6 +206,7 @@ export const profileData: ProfileData = {
     showLess: "Show less",
     quickLinks: "Quick Links",
     builtWith: "Designed with {heart} & Built with Next.js",
+    footerDescription: "focused on practical engineering outcomes in IoT, telecommunications, automation, and AI workflows.",
     footerLinks: {
       about: "About Me",
       experience: "Experience",
@@ -205,7 +216,7 @@ export const profileData: ProfileData = {
   },
   about: {
     summary:
-      "I hold a Bachelor's degree in Electronic and Telecommunications Engineering from ISUTC, with technical foundations in IoT, automation, energy optimization, and telecommunications systems. Through internships in broadcasting and automotive diagnostics, I strengthened my ability to apply engineering principles in real operational environments.",
+      "As an Electronic & Telecommunications Engineer, I combine technical foundations in IoT, automation, and networking with AI-assisted workflows to deliver faster, higher-quality digital solutions and innovation.",
     highlights: [
       {
         title: "IoT & Automation",
@@ -223,6 +234,32 @@ export const profileData: ProfileData = {
           "Demonstrated teamwork, effective communication, leadership, flexibility, and practical problem-solving in technical environments.",
       },
     ] as Highlight[],
+  },
+  process: {
+    title: "AI-Assisted Engineering Workflow",
+    description: "I leverage modern AI tools to accelerate development and problem-solving, always ensuring manual validation and responsibility for the final output.",
+    steps: [
+      {
+        title: "Discover",
+        subtitle: "Requirements Analysis",
+        description: "Understanding technical constraints and defining the core problem.",
+      },
+      {
+        title: "Break Down",
+        subtitle: "Task Structuring",
+        description: "Using AI to brainstorm architecture and slice requirements into actionable engineering tasks.",
+      },
+      {
+        title: "Prototype",
+        subtitle: "AI-Assisted Code & Build",
+        description: "Accelerating code generation, documentation, and prototyping with Claude, VS Code (Copilot), and Vercel.",
+      },
+      {
+        title: "Validate",
+        subtitle: "Manual Review & Iteration",
+        description: "Rigorous manual testing, real-world operational verification, and continuous improvement.",
+      },
+    ]
   },
   experience: [
     {
@@ -368,6 +405,7 @@ export const profileData: ProfileData = {
       title: "Residential Energy Optimization with IoT",
       description:
         "Developed an IoT-based system for intelligent control of residential energy consumption in outlets and lighting.",
+      workflow: "Workflow: C++ + Microcontrollers + IoT Prototyping",
     },
     {
       id: "scalable-model",
@@ -448,7 +486,7 @@ export const profileData: ProfileData = {
   contact: {
     heading: "Let's connect",
     message:
-      "If you are building work in IoT, telecommunications, or automation, I would be glad to connect.",
+      "If you are building work in IoT, telecommunications, automation, or AI workflows, I would be glad to connect.",
     links: [
       { label: "Email", href: "mailto:ziyadadamo58@gmail.com" },
       { label: "LinkedIn", href: "https://linkedin.com/in/ziyad-adamo" },

@@ -25,7 +25,7 @@ export function Footer() {
                             <ArtisticLogo />
                         </Link>
                         <p className="text-foreground/60 max-w-sm mb-6">
-                            {t.personal.headline} focused on practical engineering outcomes in IoT, telecommunications, and automation.
+                            {t.personal.headline} {t.ui.footerDescription}
                         </p>
                         <div className="flex gap-4">
                             <a href={t.personal.linkedin} target="_blank" rel="noopener noreferrer" className="p-2 glass rounded-full hover:text-accent hover:border-accent/50 transition-colors">

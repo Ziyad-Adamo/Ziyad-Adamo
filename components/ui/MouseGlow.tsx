@@ -35,7 +35,7 @@ export function MouseGlow() {
         };
     }, [isVisible, springX, springY]);
 
-    const background = useMotionTemplate`radial-gradient(600px circle at ${springX}px ${springY}px, rgba(0, 240, 255, 0.05), transparent 40%)`;
+    const background = useMotionTemplate`radial-gradient(600px circle at ${springX}px ${springY}px, rgba(0, 240, 255, 0.06), rgba(139, 92, 246, 0.04) 40%, transparent 80%)`;
 
     if (!isVisible) return null;
 

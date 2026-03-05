@@ -8,6 +8,7 @@ import { ArrowRight, Download } from "lucide-react";
 import { useLanguage } from "../context/LanguageContext";
 import { MouseGlow } from "../ui/MouseGlow";
 import { NetworkPulse } from "../ui/NetworkPulse";
+import { BackgroundLogo } from "../ui/BackgroundLogo";
 
 export function Hero() {
     const { t } = useLanguage();
@@ -17,6 +18,7 @@ export function Hero() {
         <Section className="min-h-screen flex items-center justify-center pt-32 pb-20 relative overflow-hidden" id="home">
             <MouseGlow />
             <NetworkPulse />
+            <BackgroundLogo />
             {/* Background animated gradient (Layer C) */}
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_120%,rgba(0,240,255,0.06),transparent_60%)] animate-pulse-slow pointer-events-none" />
 
