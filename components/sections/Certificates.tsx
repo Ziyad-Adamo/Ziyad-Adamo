@@ -5,14 +5,15 @@ import { Container } from "../layout/Container";
 import { Card } from "../ui/Card";
 import { Award } from "lucide-react";
 import { motion } from "framer-motion";
-import { profileData } from "@/src/data/profile";
+import { useLanguage } from "../context/LanguageContext";
 
 export function Certificates() {
+    const { t } = useLanguage();
     return (
         <Section id="certifications" className="bg-foreground/[0.02]">
             <Container>
                 <div className="max-w-3xl mb-16">
-                    <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-4">{profileData.ui.sections.certifications}</h2>
+                    <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-4">{t.ui.sections.certifications}</h2>
                     <div className="w-20 h-1 bg-accent rounded-full mb-8"></div>
                 </div>
 
@@ -30,7 +31,7 @@ export function Certificates() {
                         },
                     }}
                 >
-                    {profileData.coursesAndCertifications.map((item) => (
+                    {t.coursesAndCertifications.map((item: any) => (
                         <motion.div
                             key={item.id}
                             variants={{

@@ -3,18 +3,19 @@
 import { Section } from "../layout/Section";
 import { Container } from "../layout/Container";
 import { Card } from "../ui/Card";
-import { profileData } from "@/src/data/profile";
+import { useLanguage } from "../context/LanguageContext";
 import { motion } from "framer-motion";
 
 export function Education() {
-    const higherEducation = profileData.education.find((item) => item.level === "higher");
-    const previousEducation = profileData.education.filter((item) => item.level !== "higher");
+    const { t } = useLanguage();
+    const higherEducation = t.education.find((item: any) => item.level === "higher");
+    const previousEducation = t.education.filter((item: any) => item.level !== "higher");
 
     return (
         <Section id="education">
             <Container>
                 <div className="max-w-3xl mb-16">
-                    <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-4">{profileData.ui.sections.education}</h2>
+                    <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-4">{t.ui.sections.education}</h2>
                     <div className="w-20 h-1 bg-accent rounded-full mb-8"></div>
                 </div>
 
@@ -22,7 +23,7 @@ export function Education() {
                     {higherEducation && (
                         <Card interactive className="border border-accent/20">
                             <p className="text-xs uppercase tracking-[0.2em] text-accent mb-3">
-                                {profileData.ui.educationLevels.higher}
+                                {t.ui.educationLevels.higher}
                             </p>
                             <h3 className="text-xl md:text-2xl font-semibold mb-2">
                                 {higherEducation.title}
@@ -45,7 +46,7 @@ export function Education() {
                         }}
                         className="space-y-3"
                     >
-                        {previousEducation.map((education) => (
+                        {previousEducation.map((education: any) => (
                             <motion.div
                                 key={education.id}
                                 variants={{
@@ -59,8 +60,8 @@ export function Education() {
                                             <div>
                                                 <p className="text-xs uppercase tracking-[0.2em] text-foreground/55 mb-1">
                                                     {education.level === "secondary"
-                                                        ? profileData.ui.educationLevels.secondary
-                                                        : profileData.ui.educationLevels.primary}
+                                                        ? t.ui.educationLevels.secondary
+                                                        : t.ui.educationLevels.primary}
                                                 </p>
                                                 <p className="text-sm font-semibold text-foreground/90">{education.title}</p>
                                             </div>

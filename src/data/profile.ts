@@ -39,7 +39,7 @@ export interface SkillCategory {
 
 export interface CourseCertificationItem {
   id: string;
-  type: "Course" | "Certification" | "Course & Certification";
+  type: string;
   name: string;
   organization: string;
   date: string;
@@ -57,7 +57,81 @@ export interface ContactLink {
   href: string;
 }
 
-export const profileData = {
+export interface ProfileData {
+  meta: {
+    title: string;
+    description: string;
+    ogTitle: string;
+    ogDescription: string;
+    ogImage: string;
+  };
+  nav: NavItem[];
+  personal: {
+    fullName: string;
+    headline: string;
+    subheadline: string;
+    location: string;
+    email: string;
+    phoneNumbers: string[];
+    linkedin: string;
+    status: string;
+    quickFacts: QuickFact[];
+  };
+  ui: {
+    heroPrimaryCta: string;
+    heroSecondaryCta: string;
+    sections: {
+      about: string;
+      experience: string;
+      education: string;
+      skills: string;
+      certifications: string;
+      achievements: string;
+      languages: string;
+      contact: string;
+    };
+    educationLevels: {
+      higher: string;
+      secondary: string;
+      primary: string;
+    };
+    responsibilitiesTitle: string;
+    keyOutcomesTitle: string;
+    qualitiesTitle: string;
+    copyEmail: string;
+    copied: string;
+    clearFilter: string;
+    filterHint: string;
+    viewDetails: string;
+    showLess: string;
+    quickLinks: string;
+    builtWith: string;
+    footerLinks: {
+      about: string;
+      experience: string;
+      skills: string;
+      downloadCv: string;
+    };
+  };
+  about: {
+    summary: string;
+    highlights: Highlight[];
+  };
+  experience: ExperienceItem[];
+  education: EducationItem[];
+  skills: SkillCategory[];
+  coursesAndCertifications: CourseCertificationItem[];
+  achievements: AchievementItem[];
+  languages: string[];
+  qualities: string[];
+  contact: {
+    heading: string;
+    message: string;
+    links: ContactLink[];
+  };
+}
+
+export const profileData: ProfileData = {
   meta: {
     title: "Ziyad Ussene Adamo | Electronic & Telecommunications Engineer",
     description:
@@ -116,6 +190,12 @@ export const profileData = {
     qualitiesTitle: "Professional Qualities",
     copyEmail: "Copy email",
     copied: "Copied",
+    clearFilter: "Clear Filter",
+    filterHint: "Select a skill to filter related experience & achievements.",
+    viewDetails: "View details",
+    showLess: "Show less",
+    quickLinks: "Quick Links",
+    builtWith: "Designed with {heart} & Built with Next.js",
     footerLinks: {
       about: "About Me",
       experience: "Experience",
@@ -374,6 +454,4 @@ export const profileData = {
       { label: "LinkedIn", href: "https://linkedin.com/in/ziyad-adamo" },
     ] as ContactLink[],
   },
-} as const;
-
-export type ProfileData = typeof profileData;
+};

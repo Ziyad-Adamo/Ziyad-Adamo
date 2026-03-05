@@ -5,11 +5,12 @@ import { Container } from "../layout/Container";
 import { Button } from "../ui/Button";
 import { Mail, ArrowRight, Linkedin, Copy, Check } from "lucide-react";
 import { useMemo, useState } from "react";
-import { profileData } from "@/src/data/profile";
+import { useLanguage } from "../context/LanguageContext";
 
 export function Contact() {
+    const { t } = useLanguage();
     const [isCopied, setIsCopied] = useState(false);
-    const emailAddress = profileData.personal.email;
+    const emailAddress = t.personal.email;
 
     const linkIcons = useMemo(
         () => ({
@@ -33,13 +34,13 @@ export function Contact() {
         <Section id="contact">
             <Container>
                 <div className="max-w-3xl mx-auto text-center">
-                    <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-6">{profileData.ui.sections.contact}</h2>
+                    <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-6">{t.ui.sections.contact}</h2>
                     <p className="text-lg text-foreground/70 mb-10 leading-relaxed max-w-2xl mx-auto">
-                        {profileData.contact.message}
+                        {t.contact.message}
                     </p>
 
                     <div className="flex flex-wrap items-center justify-center gap-3">
-                        {profileData.contact.links.map((link) => {
+                        {t.contact.links.map((link: any) => {
                             const Icon = linkIcons[link.label as keyof typeof linkIcons] ?? ArrowRight;
 
                             return (
@@ -57,12 +58,12 @@ export function Contact() {
                             {isCopied ? (
                                 <>
                                     <Check className="mr-2 w-4 h-4 text-green-400" />
-                                    {profileData.ui.copied}
+                                    {t.ui.copied}
                                 </>
                             ) : (
                                 <>
                                     <Copy className="mr-2 w-4 h-4" />
-                                    {profileData.ui.copyEmail}
+                                    {t.ui.copyEmail}
                                 </>
                             )}
                         </Button>

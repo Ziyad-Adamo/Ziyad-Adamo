@@ -6,14 +6,15 @@ import { Card } from "../ui/Card";
 import { Globe } from "lucide-react";
 import { Badge } from "../ui/Badge";
 import { motion } from "framer-motion";
-import { profileData } from "@/src/data/profile";
+import { useLanguage } from "../context/LanguageContext";
 
 export function Languages() {
+    const { t } = useLanguage();
     return (
         <Section id="languages" className="bg-foreground/[0.02]">
             <Container>
                 <div className="max-w-3xl mb-16">
-                    <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-4">{profileData.ui.sections.languages}</h2>
+                    <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-4">{t.ui.sections.languages}</h2>
                     <div className="w-20 h-1 bg-accent rounded-full mb-8"></div>
                 </div>
 
@@ -32,7 +33,7 @@ export function Languages() {
                         }}
                         className="grid grid-cols-1 sm:grid-cols-2 gap-4"
                     >
-                        {profileData.languages.map((language) => (
+                        {t.languages.map((language: string) => (
                             <motion.div
                                 key={language}
                                 variants={{
@@ -59,12 +60,12 @@ export function Languages() {
                         transition={{ duration: 0.35 }}
                     >
                         <Card className="h-full">
-                            <h3 className="text-xl font-semibold mb-5">{profileData.ui.qualitiesTitle}</h3>
+                            <h3 className="text-xl font-semibold mb-5">{t.ui.qualitiesTitle}</h3>
                             <div className="flex flex-wrap gap-2">
-                                {profileData.qualities.map((quality) => (
+                                {t.qualities.map((quality: string) => (
                                     <Badge
                                         key={quality}
-                                        className="px-3 py-1.5 text-sm bg-white/5 text-foreground/80 border-white/10 hover:bg-accent/10 hover:text-accent hover:border-accent/25 transition-colors"
+                                        className="px-3 py-1.5 text-sm bg-foreground/5 text-foreground/80 border-foreground/10 hover:bg-accent/10 hover:text-accent hover:border-accent/25 transition-colors"
                                     >
                                         {quality}
                                     </Badge>

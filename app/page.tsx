@@ -10,22 +10,25 @@ import { Achievements } from "@/components/sections/Achievements";
 import { Languages } from "@/components/sections/Languages";
 import { Contact } from "@/components/sections/Contact";
 import { BackToTop } from "@/components/layout/BackToTop";
+import { FilterProvider } from "@/components/context/FilterContext";
 
 export default function Home() {
   return (
     <div className="flex flex-col min-h-screen">
       <Header />
-      <main className="flex-1">
-        <Hero />
-        <About />
-        <Experience />
-        <Education />
-        <Skills />
-        <Certificates />
-        <Achievements />
-        <Languages />
-        <Contact />
-      </main>
+      <FilterProvider>
+        <main className="flex-1">
+          <Hero />
+          <About />
+          <Experience />
+          <Education />
+          <Skills />
+          <Certificates />
+          <Achievements />
+          <Languages />
+          <Contact />
+        </main>
+      </FilterProvider>
       <BackToTop />
       <Footer />
     </div>

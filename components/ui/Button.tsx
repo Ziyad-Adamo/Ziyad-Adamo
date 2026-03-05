@@ -12,10 +12,10 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 export const buttonVariants = {
     base: "inline-flex items-center justify-center rounded-lg font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-background disabled:opacity-50 disabled:pointer-events-none active:scale-95",
     variants: {
-        primary: "bg-accent text-background hover:bg-accent/90 shadow-[0_0_15px_rgba(0,240,255,0.3)] hover:shadow-[0_0_25px_rgba(0,240,255,0.5)]",
-        secondary: "glass text-white hover:bg-white/10",
+        primary: "bg-accent text-background hover:bg-accent/90 hover:-translate-y-1 shadow-[0_4_15px_rgba(0,240,255,0.2)] hover:shadow-[0_6_25px_rgba(0,240,255,0.4)]",
+        secondary: "glass text-foreground hover:bg-foreground/10",
         outline: "border border-accent text-accent hover:bg-accent/10",
-        ghost: "text-foreground hover:bg-white/5",
+        ghost: "text-foreground hover:bg-foreground/5",
     },
     sizes: {
         sm: "h-9 px-4 text-sm",
