@@ -48,9 +48,8 @@ export function Footer() {
                     </div>
                 </div>
 
-                <div className="pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-foreground/40 font-mono">
+                <div className="pt-8 border-t border-border flex flex-col items-center gap-4 text-sm text-foreground/40 font-mono text-center">
                     <p>&copy; {currentYear} {t.personal.fullName}. All rights reserved.</p>
-                    <p>{t.ui.builtWith.replace("{heart}", "❤️")}</p>
                 </div>
             </Container>
         </footer>
