@@ -54,6 +54,32 @@ export interface AchievementItem {
   workflow?: string;
 }
 
+export interface ProjectItem {
+  id: string;
+  title: string;
+  category: string;
+  typeLabel: string;
+  role?: string;
+  contributionSummary?: string;
+  subtitle: string;
+  heroImage: string;
+  overview: string;
+  problem: string;
+  solution: string;
+  systemArchitectureImage: string;
+  controlLogicImage: string;
+  circuitDesignImage: string;
+  physicalPrototypeImage?: string;
+  myContribution: string;
+  toolsAndTech: string[];
+  keyLearnings: string[];
+  controlLogicImplementation: string;
+  technicalConstraintsNotes?: string;
+  badges: string[];
+  slug: string;
+  credibilityPhrase?: string;
+}
+
 export interface ContactLink {
   label: string;
   href: string;
@@ -89,6 +115,7 @@ export interface ProfileData {
       skills: string;
       certifications: string;
       achievements: string;
+      projects: string;
       languages: string;
       contact: string;
       process: string;
@@ -131,6 +158,7 @@ export interface ProfileData {
   skills: SkillCategory[];
   coursesAndCertifications: CourseCertificationItem[];
   achievements: AchievementItem[];
+  projects: ProjectItem[];
   languages: string[];
   qualities: string[];
   contact: {
@@ -157,6 +185,7 @@ export const profileData: ProfileData = {
     { label: "Skills", href: "#skills" },
     { label: "Certifications", href: "#certifications" },
     { label: "Achievements", href: "#achievements" },
+    { label: "Projects", href: "#projects" },
     { label: "Languages", href: "#languages" },
     { label: "Contact", href: "#contact" },
   ] as NavItem[],
@@ -186,6 +215,7 @@ export const profileData: ProfileData = {
       skills: "Skills",
       certifications: "Courses & Certifications",
       achievements: "Achievements",
+      projects: "Featured Projects",
       languages: "Languages & Qualities",
       contact: "Let's connect",
       process: "How I Work",
@@ -474,6 +504,59 @@ export const profileData: ProfileData = {
         "Built academic projects in electronics and telecommunications with practical technical application.",
     },
   ] as AchievementItem[],
+  projects: [
+    {
+      id: "residential-water-tank",
+      slug: "residential-water-tank-monitoring-pump-control-system",
+      title: "Residential Water Tank Monitoring and Pump Control System",
+      category: "Featured Project",
+      typeLabel: "Academic Group Project",
+      role: "Project Lead · Embedded Programming · Final Integration & Testing",
+      contributionSummary: "Developed as a university group project, with my primary contribution centered on project leadership, embedded programming, final system integration, and functional testing.",
+      subtitle: "Embedded monitoring and control prototype for residential water tanks using ATmega328P, level sensors, and simulation-driven system validation.",
+      credibilityPhrase: "Validated through both simulation and physical prototyping.",
+      heroImage: "/projects/water-tank/smt-proteus-circuit.png",
+      overview: "This project presents an embedded system designed to monitor residential water tank levels and support pump control through sensor-based logic. Developed as a university group project, it combined circuit simulation, control programming, physical prototyping, and functional validation for a practical low-cost residential automation solution.",
+      problem: "In many residential settings, water tank level management is still performed manually, which may lead to delayed pump activation, tank overflow, or low-water situations. This project explored a low-cost embedded solution capable of improving awareness and control of tank levels using simple digital sensing and visual feedback.",
+      solution: "The proposed solution uses level sensors positioned at key tank thresholds, an ATmega328P microcontroller for logic processing, LED-based level indication, and a pump-control stage. The control logic was first modeled and validated in Proteus, then implemented in a functional physical prototype to verify real behavior under practical test conditions.",
+      systemArchitectureImage: "/projects/water-tank/smt-block-diagram.png",
+      controlLogicImage: "/projects/water-tank/smt-flowchart.png",
+      circuitDesignImage: "/projects/water-tank/smt-proteus-circuit.png",
+      physicalPrototypeImage: "/projects/water-tank/smt-physical-prototype.png",
+      myContribution: "I led the project development, designed and implemented the control code, validated the circuit design with teammates, completed the final assembly, refined the programming logic, and carried out the final functional testing. Although the project was developed as a group assignment, I took primary responsibility for final integration and completion.",
+      toolsAndTech: [
+        "ATmega328P",
+        "Proteus",
+        "Embedded C/C++",
+        "Arduino-style programming",
+        "Level sensors",
+        "LEDs",
+        "Relay-based pump control",
+        "LCD-based monitoring concept"
+      ],
+      keyLearnings: [
+        "Embedded control logic design",
+        "Sensor-state interpretation",
+        "Simulation-based validation",
+        "Physical prototyping and practical testing",
+        "System integration and testing",
+        "Practical low-cost automation design"
+      ],
+      controlLogicImplementation: "The embedded logic was implemented in Arduino-style C/C++, with digital inputs mapped to tank level sensors and outputs assigned to LED indicators and pump actuation. The control loop continuously evaluates sensor states and updates system behavior according to predefined water-level conditions.",
+      technicalConstraintsNotes: "The LCD display was part of the original system architecture and design intent. However, full display integration was not completed in the final functional prototype due to practical implementation constraints related to using the ATmega328P directly instead of a complete Arduino development board. The project therefore prioritized validation of the core sensing logic, LED-based indication, and pump-control behavior.",
+      badges: [
+        "Embedded Systems",
+        "Automation",
+        "Proteus",
+        "ATmega328P",
+        "Simulation",
+        "Pump Control",
+        "Real Prototype",
+        "Physical Validation",
+        "Bench Testing"
+      ]
+    }
+  ] as ProjectItem[],
   languages: ["Portuguese", "English"],
   qualities: [
     "Effective communication",

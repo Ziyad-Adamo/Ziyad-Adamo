@@ -19,6 +19,7 @@ export const profileDictionary: Record<string, ProfileData> = {
             { label: "Competências", href: "#skills" },
             { label: "Certificações", href: "#certifications" },
             { label: "Conquistas", href: "#achievements" },
+            { label: "Projectos", href: "#projects" },
             { label: "Idiomas", href: "#languages" },
             { label: "Contacto", href: "#contact" },
         ],
@@ -48,6 +49,7 @@ export const profileDictionary: Record<string, ProfileData> = {
                 skills: "Competências Técnicas",
                 certifications: "Cursos e Certificações",
                 achievements: "Conquistas",
+                projects: "Projectos em Destaque",
                 languages: "Idiomas e Qualidades",
                 contact: "Vamos Conectar",
                 process: "Como Trabalho",
@@ -335,6 +337,49 @@ export const profileDictionary: Record<string, ProfileData> = {
                 description:
                     "Construí projectos académicos em electrónica e telecomunicações com aplicação técnica prática.",
             },
+        ],
+        projects: [
+            {
+                id: "residential-water-tank",
+                slug: "residential-water-tank-monitoring-pump-control-system",
+                title: "Sistema de Monitorização e Controlo de Bombas para Tanques de Água Residenciais",
+                        category: "Projecto em Destaque",
+                        typeLabel: "Projecto Académico de Grupo",
+                        role: "Líder de Projecto · Programação Embutida · Integração Final & Testes",
+                        contributionSummary: "Desenvolvido como um projecto de grupo universitário, com a minha contribuição principal centrada na liderança do projecto, programação embutida, integração final do sistema e testes funcionais.",
+                        subtitle: "Protótipo embutido de monitorização e controlo para tanques de água residenciais usando ATmega328P, sensores de nível e validação de sistema orientada por simulação.",
+                        credibilityPhrase: "Validado através de simulação e prototipagem física.",
+                        heroImage: "/projects/water-tank/smt-proteus-circuit.png",
+                        overview: "Este projecto apresenta um sistema embutido projectado para monitorizar os níveis de tanques de água residenciais e suportar o controlo de bombas através de lógica baseada em sensores. Desenvolvido como um projecto de grupo universitário, combinou simulação de circuitos, programação de controlo, prototipagem física e validação funcional para uma solução prática de automação residencial de baixo custo.",
+                problem: "Em muitas configurações residenciais, a gestão do nível do tanque de água ainda é realizada manualmente, o que pode levar à activação atrasada da bomba, transbordo do tanque ou situações de falta de água. Este projecto explorou uma solução embutida de baixo custo capaz de melhorar a consciencialização e o controlo dos níveis dos tanques utilizando detecção digital simples e feedback visual.",
+                solution: "A solução proposta usa sensores de nível posicionados em limites de tanque chave, um microcontrolador ATmega328P para processamento lógico, indicação de nível baseada em LED e um estágio de controlo de bomba. A lógica de controlo foi primeiramente modelada e validada no Proteus, e depois implementada num protótipo físico funcional para verificar o comportamento real sob condições práticas de teste.",
+                systemArchitectureImage: "/projects/water-tank/smt-block-diagram.png",
+                controlLogicImage: "/projects/water-tank/smt-flowchart.png",
+                circuitDesignImage: "/projects/water-tank/smt-proteus-circuit.png",
+                physicalPrototypeImage: "/projects/water-tank/smt-physical-prototype.png",
+                technicalConstraintsNotes: "O ecrã LCD fazia parte da arquitectura original do sistema e da intenção de design. No entanto, a integração completa do ecrã não foi concluída no protótipo funcional final devido a restrições práticas de implementação relacionadas ao uso directo do ATmega328P em vez de uma placa de desenvolvimento Arduino completa. O projecto, portanto, priorizou a validação da lógica central de detecção, indicação baseada em LED e comportamento do controlo da bomba.",
+                myContribution: "Liderei o desenvolvimento do projecto, desenhei e implementei o código de controlo, validei o design do circuito com os colegas de equipa, concluí a montagem final, refinei a lógica de programação e realizei os testes funcionais finais. Embora o projecto tenha sido desenvolvido como um trabalho de grupo, assumi a responsabilidade principal pela integração final e conclusão.",
+                toolsAndTech: [
+                    "ATmega328P",
+                    "Proteus",
+                    "C/C++ Embutido",
+                    "Programação estilo Arduino",
+                    "Sensores de nível",
+                    "LEDs",
+                    "Controlo de bomba baseado em relé",
+                    "Conceito de monitorização baseado em LCD"
+                ],
+                keyLearnings: [
+                    "Design lógico de controlo embutido",
+                    "Interpretação do estado do sensor",
+                    "Validação baseada em simulação",
+                    "Prototipagem física e testes práticos",
+                    "Integração e teste de sistemas",
+                    "Design prático de automação de baixo custo"
+                ],
+                controlLogicImplementation: "A lógica embutida foi implementada em C/C++ estilo Arduino, com entradas digitais mapeadas para sensores de nível de tanque e saídas atribuídas a indicadores LED e actuação de bomba. O loop de controlo avalia continuamente os estados dos sensores e actualiza o comportamento do sistema de acordo com as condições de nível de água predefinidas.",
+                badges: ["Sistemas Embutidos", "Automação", "Proteus", "ATmega328P", "Simulação", "Controlo de Bombas", "Real Prototype", "Physical Validation", "Bench Testing"]
+            }
         ],
         languages: ["Português", "Inglês"],
         qualities: [

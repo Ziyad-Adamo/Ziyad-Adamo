@@ -8,6 +8,7 @@ import { Skills } from "@/components/sections/Skills";
 import { Process } from "@/components/sections/Process";
 import { Certificates } from "@/components/sections/Certificates";
 import { Achievements } from "@/components/sections/Achievements";
+import { Projects } from "@/components/sections/Projects";
 import { Languages } from "@/components/sections/Languages";
 import { Contact } from "@/components/sections/Contact";
 import { BackToTop } from "@/components/layout/BackToTop";
@@ -27,6 +28,7 @@ export default function Home() {
           <Process />
           <Certificates />
           <Achievements />
+          <Projects />
           <Languages />
           <Contact />
         </main>
