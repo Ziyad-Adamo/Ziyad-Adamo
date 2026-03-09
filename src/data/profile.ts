@@ -67,6 +67,22 @@ export interface ProjectMediaSection {
   alt: string;
 }
 
+export interface ProjectDocumentAccess {
+  availabilityNote: string;
+  brief: {
+    label: string;
+    href: string;
+  };
+  fullThesisRequest: {
+    label: string;
+    recipientEmail: string;
+    subject: string;
+    helperText: string;
+    approvalNote: string;
+    projectRequestedLabel: string;
+  };
+}
+
 export interface ProjectItem {
   id: string;
   title: string;
@@ -101,6 +117,7 @@ export interface ProjectItem {
   keyLearnings: string[];
   controlLogicImplementation: string;
   technicalConstraintsNotes?: string;
+  documentAccess?: ProjectDocumentAccess;
   badges: string[];
   slug: string;
   credibilityPhrase?: string;
@@ -631,6 +648,24 @@ export const profileData: ProfileData = {
         "WebSockets",
         "Physical Prototype",
       ],
+      documentAccess: {
+        availabilityNote:
+          "A concise portfolio brief is available for direct download. The complete thesis can be requested for academic or professional review.",
+        brief: {
+          label: "Download Project Brief",
+          href: "/projects/pfc/PFC_Project_Brief_Ziyad_Adamo.pdf",
+        },
+        fullThesisRequest: {
+          label: "Request Full Thesis",
+          recipientEmail: "ziyadadamo58@gmail.com",
+          subject: "Request for Full Thesis - PFC Energy Monitoring Project",
+          helperText:
+            "The full thesis is available upon request for academic, technical, or professional review. Please identify yourself clearly and explain why you would like access to the full document.",
+          approvalNote: "You will be contacted if the request is approved.",
+          projectRequestedLabel:
+            "IoT-Based Residential Energy Monitoring and Smart Load Control System - Full Thesis Request",
+        },
+      },
     },
     {
       id: "residential-water-tank",

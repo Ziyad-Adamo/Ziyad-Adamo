@@ -439,6 +439,24 @@ export const profileDictionary: Record<string, ProfileData> = {
                     "WebSockets",
                     "Physical Prototype",
                 ],
+                documentAccess: {
+                    availabilityNote:
+                        "Um resumo conciso do projecto está disponível para download directo. A tese completa pode ser solicitada para revisão académica ou profissional.",
+                    brief: {
+                        label: "Download Project Brief",
+                        href: "/projects/pfc/PFC_Project_Brief_Ziyad_Adamo.pdf",
+                    },
+                    fullThesisRequest: {
+                        label: "Request Full Thesis",
+                        recipientEmail: "ziyadadamo58@gmail.com",
+                        subject: "Request for Full Thesis - PFC Energy Monitoring Project",
+                        helperText:
+                            "The full thesis is available upon request for academic, technical, or professional review. Please identify yourself clearly and explain why you would like access to the full document.",
+                        approvalNote: "You will be contacted if the request is approved.",
+                        projectRequestedLabel:
+                            "IoT-Based Residential Energy Monitoring and Smart Load Control System - Full Thesis Request",
+                    },
+                },
             },
             {
                 id: "residential-water-tank",
