@@ -162,68 +162,82 @@ export function Header() {
                         <Button
                             variant="ghost"
                             size="sm"
-                            onClick={() => setIsMenuOpen((previous) => !previous)}
-                            aria-label="Toggle menu"
+                            onClick={() => setIsMenuOpen(true)}
+                            aria-label="Open menu"
                             aria-expanded={isMenuOpen}
                             aria-controls="mobile-navigation"
                         >
-                            {isMenuOpen ? <X size={18} /> : <Menu size={18} />}
+                            <Menu size={18} />
                         </Button>
 
                         <AnimatePresence>
                             {isMenuOpen && (
-                                <>
-                                    <motion.button
-                                        type="button"
-                                        aria-label="Close mobile menu"
-                                        initial={{ opacity: 0 }}
-                                        animate={{ opacity: 1 }}
-                                        exit={{ opacity: 0 }}
-                                        transition={{ duration: 0.2 }}
-                                        onClick={() => setIsMenuOpen(false)}
-                                        className="fixed inset-0 z-[60] bg-background/55 backdrop-blur-[2px]"
-                                    />
-                                    <motion.div
-                                        id="mobile-navigation"
-                                        initial={{ opacity: 0, y: -14, scale: 0.98 }}
-                                        animate={{ opacity: 1, y: 0, scale: 1 }}
-                                        exit={{ opacity: 0, y: -14, scale: 0.98 }}
-                                        transition={{ duration: 0.2 }}
-                                        className="fixed inset-x-4 top-24 z-[70] max-h-[calc(100dvh-7.5rem)] overflow-y-auto rounded-2xl border border-border/70 glass p-4 shadow-2xl"
-                                    >
-                                        <nav className="flex flex-col gap-2">
-                                            {navLinks.map((link: NavItem) => (
-                                                <Link
+                                <motion.div
+                                    id="mobile-navigation"
+                                    initial={{ opacity: 0, y: -20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: -20, transition: { duration: 0.2, ease: "easeIn" } }}
+                                    transition={{ duration: 0.3, ease: "easeOut" }}
+                                    className="fixed inset-0 z-[100] bg-background/98 backdrop-blur-2xl flex flex-col"
+                                >
+                                    <div className="flex justify-end p-5 pt-8">
+                                        <Button
+                                            variant="ghost"
+                                            size="sm"
+                                            onClick={() => setIsMenuOpen(false)}
+                                            aria-label="Close menu"
+                                            className="mr-1"
+                                        >
+                                            <X size={24} />
+                                        </Button>
+                                    </div>
+                                    <div className="flex-1 flex flex-col justify-center items-center pb-24 overflow-y-auto">
+                                        <nav className="flex flex-col gap-7 items-center text-center">
+                                            {navLinks.map((link: NavItem, i: number) => (
+                                                <motion.div
                                                     key={link.label}
-                                                    href={link.href}
-                                                    onClick={() => handleNavClick(link.href)}
-                                                    className={cn(
-                                                        "rounded-lg px-3 py-2 text-sm transition-colors relative",
-                                                        activeSection === link.href.replace("#", "")
-                                                            ? "bg-foreground/[0.06] text-accent font-medium leading-[1.2]"
-                                                            : "text-foreground/80 hover:bg-foreground/5 hover:text-accent"
-                                                    )}
+                                                    initial={{ opacity: 0, y: 20 }}
+                                                    animate={{ opacity: 1, y: 0 }}
+                                                    transition={{ delay: 0.05 + i * 0.04, duration: 0.4 }}
                                                 >
-                                                    {link.label}
-                                                    {activeSection === link.href.replace("#", "") && (
-                                                        <motion.span
-                                                            layoutId="activeMobileSection"
-                                                            className="absolute left-0 top-0 bottom-0 w-[2px] bg-accent rounded-r-full"
-                                                            transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                                                        />
-                                                    )}
-                                                </Link>
+                                                    <Link
+                                                        href={link.href}
+                                                        onClick={() => handleNavClick(link.href)}
+                                                        className={cn(
+                                                            "text-2xl sm:text-3xl font-semibold tracking-tight transition-colors relative",
+                                                            activeSection === link.href.replace("#", "")
+                                                                ? "text-accent"
+                                                                : "text-foreground/90 hover:text-accent"
+                                                        )}
+                                                    >
+                                                        {link.label}
+                                                        {activeSection === link.href.replace("#", "") && (
+                                                            <motion.span
+                                                                layoutId="activeMobileSection"
+                                                                className="absolute -bottom-2 left-1/2 -translate-x-1/2 h-[3px] w-8 rounded-full bg-accent"
+                                                                transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                                                            />
+                                                        )}
+                                                    </Link>
+                                                </motion.div>
                                             ))}
-                                            <a
-                                                href="/cv-ziyad-adamo.pdf"
-                                                download
-                                                className="mt-4 rounded-lg border border-accent/20 bg-accent/5 px-3 py-2 text-sm font-medium text-accent hover:bg-accent/10 transition-colors text-center"
+                                            <motion.div
+                                                initial={{ opacity: 0, y: 20 }}
+                                                animate={{ opacity: 1, y: 0 }}
+                                                transition={{ delay: 0.1 + navLinks.length * 0.04, duration: 0.4 }}
+                                                className="mt-8"
                                             >
-                                                {t.ui.heroSecondaryCta}
-                                            </a>
+                                                <a
+                                                    href="/cv-ziyad-adamo.pdf"
+                                                    download
+                                                    className="inline-flex items-center justify-center rounded-full border border-accent/40 bg-accent/10 px-8 py-3.5 text-lg font-medium text-accent hover:bg-accent/20 transition-all shadow-[0_0_15px_rgba(0,240,255,0.1)]"
+                                                >
+                                                    {t.ui.heroSecondaryCta}
+                                                </a>
+                                            </motion.div>
                                         </nav>
-                                    </motion.div>
-                                </>
+                                    </div>
+                                </motion.div>
                             )}
                         </AnimatePresence>
                     </div>
