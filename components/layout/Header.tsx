@@ -7,7 +7,7 @@ import { Container } from "./Container";
 import Link from "next/link";
 import { Button } from "../ui/Button";
 import { Menu, X } from "lucide-react";
-import { profileData, NavItem } from "@/src/data/profile";
+import { NavItem } from "@/src/data/profile";
 import { ArtisticLogo } from "../ui/ArtisticLogo";
 import { ThemeToggle } from "../ui/ThemeToggle";
 import { LanguageToggle } from "../ui/LanguageToggle";
@@ -74,6 +74,19 @@ export function Header() {
         sectionElements.forEach((section) => observer.observe(section));
         return () => observer.disconnect();
     }, [observedSections]);
+
+    useEffect(() => {
+        if (!isMenuOpen) {
+            document.body.style.overflow = "";
+            return;
+        }
+
+        document.body.style.overflow = "hidden";
+
+        return () => {
+            document.body.style.overflow = "";
+        };
+    }, [isMenuOpen]);
 
     const handleNavClick = (href: string) => {
         setActiveSection(href.replace("#", ""));
@@ -151,51 +164,66 @@ export function Header() {
                             size="sm"
                             onClick={() => setIsMenuOpen((previous) => !previous)}
                             aria-label="Toggle menu"
+                            aria-expanded={isMenuOpen}
+                            aria-controls="mobile-navigation"
                         >
                             {isMenuOpen ? <X size={18} /> : <Menu size={18} />}
                         </Button>
 
                         <AnimatePresence>
                             {isMenuOpen && (
-                                <motion.div
-                                    initial={{ opacity: 0, y: -10, scale: 0.95 }}
-                                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                                    exit={{ opacity: 0, y: -10, scale: 0.95 }}
-                                    transition={{ duration: 0.2 }}
-                                    className="absolute right-0 mt-3 w-64 glass rounded-xl p-4 border border-border/70 shadow-xl overflow-hidden origin-top-right"
-                                >
-                                    <nav className="flex flex-col gap-2">
-                                        {navLinks.map((link: NavItem) => (
-                                            <Link
-                                                key={link.label}
-                                                href={link.href}
-                                                onClick={() => handleNavClick(link.href)}
-                                                className={cn(
-                                                    "rounded-lg px-3 py-2 text-sm transition-colors relative",
-                                                    activeSection === link.href.replace("#", "")
-                                                        ? "bg-foreground/[0.06] text-accent font-medium leading-[1.2]"
-                                                        : "text-foreground/80 hover:bg-foreground/5 hover:text-accent"
-                                                )}
+                                <>
+                                    <motion.button
+                                        type="button"
+                                        aria-label="Close mobile menu"
+                                        initial={{ opacity: 0 }}
+                                        animate={{ opacity: 1 }}
+                                        exit={{ opacity: 0 }}
+                                        transition={{ duration: 0.2 }}
+                                        onClick={() => setIsMenuOpen(false)}
+                                        className="fixed inset-0 z-[60] bg-background/55 backdrop-blur-[2px]"
+                                    />
+                                    <motion.div
+                                        id="mobile-navigation"
+                                        initial={{ opacity: 0, y: -14, scale: 0.98 }}
+                                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                                        exit={{ opacity: 0, y: -14, scale: 0.98 }}
+                                        transition={{ duration: 0.2 }}
+                                        className="fixed inset-x-4 top-24 z-[70] max-h-[calc(100dvh-7.5rem)] overflow-y-auto rounded-2xl border border-border/70 glass p-4 shadow-2xl"
+                                    >
+                                        <nav className="flex flex-col gap-2">
+                                            {navLinks.map((link: NavItem) => (
+                                                <Link
+                                                    key={link.label}
+                                                    href={link.href}
+                                                    onClick={() => handleNavClick(link.href)}
+                                                    className={cn(
+                                                        "rounded-lg px-3 py-2 text-sm transition-colors relative",
+                                                        activeSection === link.href.replace("#", "")
+                                                            ? "bg-foreground/[0.06] text-accent font-medium leading-[1.2]"
+                                                            : "text-foreground/80 hover:bg-foreground/5 hover:text-accent"
+                                                    )}
+                                                >
+                                                    {link.label}
+                                                    {activeSection === link.href.replace("#", "") && (
+                                                        <motion.span
+                                                            layoutId="activeMobileSection"
+                                                            className="absolute left-0 top-0 bottom-0 w-[2px] bg-accent rounded-r-full"
+                                                            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                                                        />
+                                                    )}
+                                                </Link>
+                                            ))}
+                                            <a
+                                                href="/cv-ziyad-adamo.pdf"
+                                                download
+                                                className="mt-4 rounded-lg border border-accent/20 bg-accent/5 px-3 py-2 text-sm font-medium text-accent hover:bg-accent/10 transition-colors text-center"
                                             >
-                                                {link.label}
-                                                {activeSection === link.href.replace("#", "") && (
-                                                    <motion.span
-                                                        layoutId="activeMobileSection"
-                                                        className="absolute left-0 top-0 bottom-0 w-[2px] bg-accent rounded-r-full"
-                                                        transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                                                    />
-                                                )}
-                                            </Link>
-                                        ))}
-                                        <a
-                                            href="/cv-ziyad-adamo.pdf"
-                                            download
-                                            className="mt-4 rounded-lg border border-accent/20 bg-accent/5 px-3 py-2 text-sm font-medium text-accent hover:bg-accent/10 transition-colors text-center"
-                                        >
-                                            {t.ui.heroSecondaryCta}
-                                        </a>
-                                    </nav>
-                                </motion.div>
+                                                {t.ui.heroSecondaryCta}
+                                            </a>
+                                        </nav>
+                                    </motion.div>
+                                </>
                             )}
                         </AnimatePresence>
                     </div>
