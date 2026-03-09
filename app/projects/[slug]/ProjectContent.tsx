@@ -3,341 +3,583 @@
 import Image from "next/image";
 import Link from "next/link";
 import {
-    ArrowLeft,
-    CheckCircle2,
-    ChevronRight,
-    Cpu,
-    FileCode2,
-    Layers3,
-    User,
+  ArrowLeft,
+  CheckCircle2,
+  ChevronRight,
+  Cpu,
+  FileCode2,
+  Layers3,
+  User,
+  Wifi,
+  MonitorSmartphone,
+  CheckSquare,
+  Network
 } from "lucide-react";
 import { Container } from "@/components/layout/Container";
 import { useLanguage } from "@/components/context/LanguageContext";
 import type { ProjectItem } from "@/src/data/profile";
 
 interface DiagramCardProps {
-    title: string;
-    caption: string;
-    src: string;
-    alt: string;
-    className?: string;
+  title: string;
+  caption: string;
+  src: unknown;
+  alt: string;
+  className?: string;
+  imageClassName?: string;
+}
+
+function getSafeImageSrc(src: unknown): string | null {
+  if (typeof src === "string") {
+    const trimmed = src.trim();
+    return trimmed.length > 0 ? trimmed : null;
+  }
+
+  if (src && typeof src === "object" && "src" in src) {
+    const nested = (src as { src?: unknown }).src;
+    if (typeof nested === "string") {
+      const trimmed = nested.trim();
+      return trimmed.length > 0 ? trimmed : null;
+    }
+  }
+
+  return null;
 }
 
 function DiagramCard({
-    title,
-    caption,
-    src,
-    alt,
-    className = "aspect-[16/10]",
+  title,
+  caption,
+  src,
+  alt,
+  className = "aspect-[16/10]",
+  imageClassName = "object-contain p-4 md:p-6",
 }: DiagramCardProps) {
-    return (
-        <figure className="space-y-3">
-            <div
-                className={`relative w-full overflow-hidden rounded-2xl border border-border/50 bg-background ${className}`}
-            >
-                <Image
-                    src={src}
-                    alt={alt}
-                    fill
-                    sizes="(max-width: 1024px) 100vw, 50vw"
-                    className="object-contain p-4 md:p-6"
-                />
-            </div>
-            <figcaption className="space-y-1">
-                <h3 className="text-base font-semibold text-foreground">{title}</h3>
-                <p className="text-sm text-foreground/60">{caption}</p>
-            </figcaption>
-        </figure>
-    );
+  const safeSrc = getSafeImageSrc(src);
+
+  return (
+    <figure className="space-y-3">
+      {safeSrc ? (
+        <div
+          className={`relative w-full overflow-hidden rounded-2xl border border-border/50 bg-background ${className}`}
+        >
+          <Image src={safeSrc} alt={alt} fill sizes="(max-width: 1024px) 100vw, 50vw" className={imageClassName} />
+        </div>
+      ) : (
+        <div
+          className={`relative w-full overflow-hidden rounded-2xl border border-border/50 bg-foreground/[0.03] ${className}`}
+          aria-hidden="true"
+        />
+      )}
+      <figcaption className="space-y-1">
+        {title && <h3 className="text-base font-semibold text-foreground">{title}</h3>}
+        {caption && <p className="text-sm text-foreground/60">{caption}</p>}
+      </figcaption>
+    </figure>
+  );
 }
 
 interface ProjectContentProps {
-    slug: string;
-    initialProject: ProjectItem;
+  slug: string;
+  initialProject: ProjectItem;
 }
 
 export function ProjectContent({ slug, initialProject }: ProjectContentProps) {
-    const { t, language } = useLanguage();
+  const { t, language } = useLanguage();
+  const isPortuguese = language === "pt";
 
-    // Find localized project based on slug, fallback to initial/English if not found
-    const project = t.projects.find((p: ProjectItem) => p.slug === slug) || initialProject;
+  const project = t.projects.find((item: ProjectItem) => item.slug === slug) || initialProject;
+  const isFlagship = Boolean(project.isFlagship);
+  const heroImageSrc = getSafeImageSrc(project.heroImage);
 
-    return (
-        <>
-            <nav
-                aria-label="Breadcrumb"
-                className="sticky top-16 z-40 border-y border-border/40 bg-background/90 backdrop-blur-md"
+  return (
+    <>
+      <nav
+        aria-label="Breadcrumb"
+        className="sticky top-16 z-40 border-y border-border/40 bg-background/90 backdrop-blur-md"
+      >
+        <Container>
+          <div className="flex items-center gap-2 overflow-x-auto whitespace-nowrap py-4 text-sm text-foreground/60">
+            <Link
+              href="/#projects"
+              className="inline-flex items-center gap-1.5 transition-colors hover:text-accent"
             >
-                <Container>
-                    <div className="flex items-center gap-2 overflow-x-auto whitespace-nowrap py-4 text-sm text-foreground/60">
-                        <Link
-                            href="/#projects"
-                            className="inline-flex items-center gap-1.5 transition-colors hover:text-accent"
-                        >
-                            <ArrowLeft size={14} />
-                            {language === "pt" ? "Voltar aos Projectos" : "Back to Projects"}
-                        </Link>
-                        <ChevronRight size={14} />
-                        <span className="text-foreground">{project.title}</span>
-                    </div>
-                </Container>
-            </nav>
+              <ArrowLeft size={14} />
+              {isPortuguese ? "Voltar aos Projectos" : "Back to Projects"}
+            </Link>
+            <ChevronRight size={14} />
+            <span className="text-foreground">{project.title}</span>
+          </div>
+        </Container>
+      </nav>
 
-            <section className="py-10 lg:py-14" aria-labelledby="project-title">
-                <Container>
-                    <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-2">
-                        <article>
-                            <p className="mb-4 inline-flex items-center gap-2 rounded-full border border-accent/25 bg-accent/10 px-3 py-1 text-xs font-semibold text-accent">
-                                <CheckCircle2 size={14} />
-                                {project.category}
-                            </p>
-                            <h1
-                                id="project-title"
-                                className="text-3xl font-bold tracking-tight md:text-5xl"
-                            >
-                                {project.title}
-                            </h1>
-                            <p className="mt-5 max-w-2xl text-base leading-relaxed text-foreground/70 md:text-lg">
-                                {project.subtitle}
-                            </p>
+      <section className="py-10 lg:py-14" aria-labelledby="project-title">
+        <Container>
+          <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-2">
+            <article>
+              <p className="mb-4 inline-flex items-center gap-2 rounded-full border border-accent/25 bg-accent/10 px-3 py-1 text-xs font-semibold text-accent">
+                <CheckCircle2 size={14} />
+                {project.category}
+              </p>
+              <h1 id="project-title" className={`font-bold tracking-tight ${isFlagship ? 'text-4xl md:text-6xl text-foreground' : 'text-3xl md:text-5xl'}`}>
+                {project.title}
+              </h1>
+              <p className="mt-5 max-w-2xl text-base leading-relaxed text-foreground/70 md:text-lg">
+                {project.subtitle}
+              </p>
 
-                            {project.role && (
-                                <div className="mt-6 inline-flex items-center gap-2 rounded-lg border border-accent/40 bg-accent/10 px-4 py-2.5 text-sm font-medium text-foreground/90 shadow-sm md:text-base">
-                                    <User size={18} className="text-accent" />
-                                    <span>
-                                        <span className="font-semibold text-accent">
-                                            {language === "pt" ? "Papel Técnico:" : "Role:"}
-                                        </span>{" "}
-                                        {project.role}
-                                    </span>
-                                </div>
-                            )}
-                            {project.contributionSummary && (
-                                <p className="mt-3 max-w-2xl text-sm leading-relaxed text-foreground/75">
-                                    {project.contributionSummary}
-                                </p>
-                            )}
-                            {project.credibilityPhrase && (
-                                <p className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-foreground/80">
-                                    <CheckCircle2 size={16} className="text-accent" />
-                                    {project.credibilityPhrase}
-                                </p>
-                            )}
-                            <div className="mt-6 flex flex-wrap gap-2">
-                                {project.badges.map((badge: string) => (
-                                    <span
-                                        key={badge}
-                                        className="rounded-full border border-accent/20 bg-accent/10 px-3 py-1 text-xs font-medium text-accent"
-                                    >
-                                        {badge}
-                                    </span>
-                                ))}
-                            </div>
-                            <div className="mt-6 inline-flex items-center gap-2 text-xs text-foreground/50 opacity-80 md:text-sm">
-                                <Layers3 size={14} className="opacity-70" />
-                                <span>{language === "pt" ? "Tipo de Projecto:" : "Project Type:"}</span>
-                                <span className="font-medium text-foreground/65">{project.typeLabel}</span>
-                            </div>
-                        </article>
+              {project.role && (
+                <div className="mt-6 inline-flex items-center gap-2 rounded-lg border border-accent/40 bg-accent/10 px-4 py-2.5 text-sm font-medium text-foreground/90 shadow-sm md:text-base">
+                  <User size={18} className="text-accent" />
+                  <span>
+                    <span className="font-semibold text-accent">
+                      {isPortuguese ? "Papel:" : "Role:"}
+                    </span>{" "}
+                    {project.role}
+                  </span>
+                </div>
+              )}
 
-                        <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl border border-border/50 bg-background">
-                            <Image
-                                src={project.heroImage}
-                                alt={`${project.title} circuit simulation`}
-                                fill
-                                priority
-                                sizes="(max-width: 1024px) 100vw, 50vw"
-                                className="object-cover"
-                            />
-                        </div>
-                    </div>
-                </Container>
-            </section>
+              {project.contributionSummary && (
+                <p className="mt-3 max-w-2xl text-sm leading-relaxed text-foreground/75">
+                  {project.contributionSummary}
+                </p>
+              )}
+
+              {project.credibilityPhrase && (
+                <p className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-foreground/80">
+                  <CheckCircle2 size={16} className="text-accent" />
+                  {project.credibilityPhrase}
+                </p>
+              )}
+
+              <div className="mt-6 flex flex-wrap gap-2">
+                {project.badges.map((badge: string) => (
+                  <span
+                    key={badge}
+                    className="rounded-full border border-accent/20 bg-accent/10 px-3 py-1 text-xs font-medium text-accent"
+                  >
+                    {badge}
+                  </span>
+                ))}
+              </div>
+
+              <div className="mt-6 inline-flex items-center gap-2 text-xs text-foreground/50 opacity-80 md:text-sm">
+                <Layers3 size={14} className="opacity-70" />
+                <span>{isPortuguese ? "Tipo de Projecto:" : "Project Type:"}</span>
+                <span className="font-medium text-foreground/65">{project.typeLabel}</span>
+              </div>
+            </article>
+
+            {heroImageSrc && (
+              <div className={`relative w-full overflow-hidden rounded-2xl border bg-background ${isFlagship ? 'aspect-[4/3] md:aspect-[16/10] border-accent/40 shadow-[0_0_30px_rgba(0,240,255,0.05)]' : 'aspect-[4/3] border-border/50'}`}>
+                <Image
+                  src={heroImageSrc}
+                  alt={`${project.title} preview`}
+                  fill
+                  priority
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                  className="object-cover"
+                />
+              </div>
+            )}
+          </div>
+        </Container>
+      </section>
+
+      <section
+        className="border-y border-border/30 bg-foreground/[0.02] py-14 lg:py-20"
+        aria-labelledby="case-study"
+      >
+        <Container>
+          <div className="mx-auto max-w-5xl space-y-14">
+            <header>
+              <h2 id="case-study" className="text-2xl font-bold md:text-3xl">
+                {isPortuguese ? "Estudo de Caso de Engenharia" : "Engineering Case Study"}
+              </h2>
+            </header>
+
+            {isFlagship ? (
+              <>
+                {project.shortSummary && (
+                  <section aria-labelledby="short-summary" className="rounded-2xl border border-border/50 bg-background p-6">
+                    <h3 id="short-summary" className="text-lg font-semibold">
+                      {isPortuguese ? "Resumo Curto" : "Short Summary"}
+                    </h3>
+                    <p className="mt-3 leading-relaxed text-foreground/75">{project.shortSummary}</p>
+                  </section>
+                )}
+
+                <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+                  <article className="rounded-2xl border border-border/50 bg-background p-6 lg:col-span-3">
+                    <h3 className="text-lg font-semibold">{isPortuguese ? "Visão Geral" : "Overview"}</h3>
+                    <p className="mt-3 leading-relaxed text-foreground/75">{project.overview}</p>
+                  </article>
+
+                  <article className="rounded-2xl border border-border/50 bg-background p-6 lg:col-span-2">
+                    <h3 className="text-lg font-semibold">{isPortuguese ? "Problema e Contexto" : "Problem & Context"}</h3>
+                    <p className="mt-3 leading-relaxed text-foreground/75">{project.problem}</p>
+                  </article>
+
+                  <article className="rounded-2xl border border-border/50 bg-background p-6 lg:col-span-1">
+                    <h3 className="text-lg font-semibold">{isPortuguese ? "Solução" : "Solution"}</h3>
+                    <p className="mt-3 text-sm leading-relaxed text-foreground/75">{project.solution}</p>
+                  </article>
+                </div>
+
+                <section aria-labelledby="system-architecture" className="space-y-6">
+                  <h3 id="system-architecture" className="flex items-center gap-2 text-2xl font-bold">
+                    <Network size={24} className="text-accent" />
+                    {isPortuguese ? "Arquitectura do Sistema" : "System Architecture"}
+                  </h3>
+                  <div className="rounded-3xl border border-accent/20 bg-accent/5 p-4 md:p-8">
+                    <DiagramCard
+                      title={isPortuguese ? "Arquitectura Integrada" : "Integrated System Architecture"}
+                      caption={
+                        project.systemArchitectureCaption ??
+                        (isPortuguese
+                          ? "Diagrama de integração e ligação ao nível do sistema."
+                          : "System-level integration and wiring architecture.")
+                      }
+                      src={project.systemArchitectureImage}
+                      alt={`${project.title} system architecture`}
+                      className="aspect-[4/3] md:aspect-[16/9] bg-transparent border-none"
+                      imageClassName="object-contain"
+                    />
+                  </div>
+                </section>
+
+                <section aria-labelledby="functional-prototype" className="space-y-6">
+                  <h3 id="functional-prototype" className="flex items-center gap-2 text-2xl font-bold">
+                    <Cpu size={24} className="text-accent" />
+                    {isPortuguese ? "Protótipo Funcional" : "Functional Prototype"}
+                  </h3>
+                  {project.functionalPrototypeText && (
+                    <p className="max-w-4xl text-base leading-relaxed text-foreground/80">{project.functionalPrototypeText}</p>
+                  )}
+                  <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                    {(project.functionalPrototypeImages ?? []).map((image, index) => {
+                      const safeSrc = getSafeImageSrc(image.src);
+                      const key = safeSrc ?? `functional-prototype-${index}`;
+
+                      return (
+                        <DiagramCard
+                          key={key}
+                          title=""
+                          caption={image.caption}
+                          src={safeSrc}
+                          alt={image.alt}
+                          className="aspect-[4/3] border-border/40"
+                          imageClassName="object-cover"
+                        />
+                      );
+                    })}
+                  </div>
+                </section>
+
+                {project.localDisplayInterface && (
+                  <section aria-labelledby="local-display" className="space-y-6">
+                    <h3 id="local-display" className="flex items-center gap-2 text-2xl font-bold">
+                      <MonitorSmartphone size={24} className="text-accent" />
+                      {isPortuguese ? "Interface Local de Display" : "Local Display Interface"}
+                    </h3>
+                    <p className="max-w-4xl text-base leading-relaxed text-foreground/80">{project.localDisplayInterface.text}</p>
+                    <DiagramCard
+                      title=""
+                      caption={project.localDisplayInterface.caption}
+                      src={project.localDisplayInterface.image}
+                      alt={project.localDisplayInterface.alt}
+                      className="aspect-[16/10] border-border/40"
+                      imageClassName="object-contain p-4 md:p-6"
+                    />
+                  </section>
+                )}
+
+                {project.webMonitoringControl && (
+                  <section aria-labelledby="web-monitoring" className="space-y-6">
+                    <h3 id="web-monitoring" className="flex items-center gap-2 text-2xl font-bold">
+                      <Wifi size={24} className="text-accent" />
+                      {isPortuguese ? "Monitorização e Controlo Web" : "Web Monitoring & Control"}
+                    </h3>
+                    <p className="max-w-4xl text-base leading-relaxed text-foreground/80">{project.webMonitoringControl.text}</p>
+                    <DiagramCard
+                      title=""
+                      caption={project.webMonitoringControl.caption}
+                      src={project.webMonitoringControl.image}
+                      alt={project.webMonitoringControl.alt}
+                      className="aspect-[16/9] border-border/40"
+                      imageClassName="object-contain p-4 md:p-6"
+                    />
+                  </section>
+                )}
+
+                {project.sensingAutomationDetail && (
+                  <section aria-labelledby="sensing-detail" className="space-y-6">
+                    <h3 id="sensing-detail" className="flex items-center gap-2 text-2xl font-bold">
+                      <CheckSquare size={24} className="text-accent" />
+                      {isPortuguese ? "Detalhe de Detecção e Automação" : "Sensing & Automation Detail"}
+                    </h3>
+                    <p className="max-w-4xl text-base leading-relaxed text-foreground/80">{project.sensingAutomationDetail.text}</p>
+                    <DiagramCard
+                      title=""
+                      caption={project.sensingAutomationDetail.caption}
+                      src={project.sensingAutomationDetail.image}
+                      alt={project.sensingAutomationDetail.alt}
+                      className="aspect-[16/10] border-border/40"
+                      imageClassName="object-cover"
+                    />
+                  </section>
+                )}
+
+                {project.embeddedLogicCommunicationText && (
+                  <section aria-labelledby="embedded-layer" className="rounded-3xl border border-accent/20 bg-accent/5 p-6 md:p-10">
+                    <h3 id="embedded-layer" className="mb-4 inline-flex items-center gap-2 text-2xl font-bold">
+                      <FileCode2 size={24} className="text-accent" />
+                      {isPortuguese
+                        ? "Lógica Embutida e Camada de Comunicação"
+                        : "Embedded Logic & Communication Layer"}
+                    </h3>
+                    <p className="max-w-4xl text-base leading-relaxed text-foreground/80">
+                      {project.embeddedLogicCommunicationText}
+                    </p>
+                  </section>
+                )}
+
+                {project.keyFeatures?.length ? (
+                  <section aria-labelledby="key-features" className="space-y-6">
+                    <h3 id="key-features" className="text-2xl font-bold">
+                      {isPortuguese ? "Funcionalidades-Chave" : "Key Features"}
+                    </h3>
+                    <ul className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                      {project.keyFeatures.map((item) => (
+                        <li key={item} className="flex items-start gap-3 rounded-2xl border border-border/40 bg-background/50 p-4 text-sm text-foreground/80">
+                          <CheckCircle2 size={18} className="mt-0.5 shrink-0 text-accent" />
+                          <span className="leading-tight">{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </section>
+                ) : null}
+
+                <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                  {project.validationOutcomes && (
+                    <section className="rounded-2xl border border-border/50 bg-background p-6 md:p-8">
+                      <h3 className="text-xl font-bold">
+                        {isPortuguese ? "Validação e Resultados" : "Validation & Outcomes"}
+                      </h3>
+                      <p className="mt-4 text-sm leading-relaxed text-foreground/75">
+                        {project.validationOutcomes}
+                      </p>
+                    </section>
+                  )}
+
+                  {project.limitationsFutureImprovements && (
+                    <section className="rounded-2xl border border-border/50 bg-background p-6 md:p-8">
+                      <h3 className="text-xl font-bold">
+                        {isPortuguese
+                          ? "Limitações e Melhorias Futuras"
+                          : "Limitations & Future Improvements"}
+                      </h3>
+                      <p className="mt-4 text-sm leading-relaxed text-foreground/75">
+                        {project.limitationsFutureImprovements}
+                      </p>
+                    </section>
+                  )}
+                </div>
+
+                <section
+                  aria-labelledby="tools-tech"
+                  className="rounded-3xl border border-border/50 bg-background p-6 md:p-10"
+                >
+                  <h3 id="tools-tech" className="mb-6 flex items-center gap-2 text-2xl font-bold">
+                    <Cpu size={24} className="text-accent" />
+                    {isPortuguese ? "Tech Stack e Ferramentas" : "Tech Stack"}
+                  </h3>
+                  <div className="flex flex-wrap gap-2.5">
+                    {project.toolsAndTech.map((tool) => (
+                      <span
+                        key={tool}
+                        className="rounded-lg border border-accent/20 bg-accent/5 px-4 py-2 text-sm font-medium text-accent hover:bg-accent/10 transition-colors"
+                      >
+                        {tool}
+                      </span>
+                    ))}
+                  </div>
+                </section>
+              </>
+            ) : (
+              <>
+                <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+                  <article className="rounded-2xl border border-border/50 bg-background p-6 md:col-span-3">
+                    <h3 className="text-lg font-semibold">{isPortuguese ? "Resumo" : "Summary"}</h3>
+                    <p className="mt-3 leading-relaxed text-foreground/75">{project.overview}</p>
+                  </article>
+
+                  <article className="rounded-2xl border border-border/50 bg-background p-6 md:col-span-3 lg:col-span-1">
+                    <h3 className="text-lg font-semibold">{isPortuguese ? "Problema" : "Problem"}</h3>
+                    <p className="mt-3 text-sm leading-relaxed text-foreground/75">{project.problem}</p>
+                  </article>
+
+                  <article className="rounded-2xl border border-border/50 bg-background p-6 md:col-span-3 lg:col-span-2">
+                    <h3 className="text-lg font-semibold">{isPortuguese ? "Solução" : "Solution"}</h3>
+                    <p className="mt-3 text-sm leading-relaxed text-foreground/75">{project.solution}</p>
+                  </article>
+                </div>
+
+                <section aria-labelledby="control-logic" className="space-y-5">
+                  <h3 id="control-logic" className="inline-flex items-center gap-2 text-xl font-semibold">
+                    <FileCode2 size={18} className="text-accent" />
+                    {isPortuguese ? "Implementação Lógica de Controlo" : "Control Logic Implementation"}
+                  </h3>
+                  <p className="leading-relaxed text-foreground/75">
+                    {project.controlLogicImplementation}
+                  </p>
+                </section>
+
+                <section aria-labelledby="diagrams" className="space-y-7">
+                  <h3 id="diagrams" className="text-xl font-semibold">
+                    {isPortuguese ? "Artefactos de Design do Sistema" : "System Design Artifacts"}
+                  </h3>
+                  <DiagramCard
+                    title={isPortuguese ? "Diagrama de Blocos do Sistema" : "System Block Diagram"}
+                    caption={
+                      project.systemArchitectureCaption ??
+                      (isPortuguese
+                        ? "Arquitectura de componentes e fluxo de sinal de alto nível."
+                        : "High-level component architecture and signal flow.")
+                    }
+                    src={project.systemArchitectureImage}
+                    alt={`${project.title} block diagram`}
+                    className="aspect-[16/8]"
+                  />
+                  <div className="grid grid-cols-1 gap-7 lg:grid-cols-2">
+                    <DiagramCard
+                      title={isPortuguese ? "Fluxograma de Controlo" : "Control Flowchart"}
+                      caption={
+                        isPortuguese
+                          ? "Fluxo de decisão para avaliação do estado do sensor e actuador."
+                          : "Decision flow for sensor-state evaluation and pump actuation."
+                      }
+                      src={project.controlLogicImage}
+                      alt={`${project.title} control flowchart`}
+                      className="aspect-[16/10]"
+                    />
+                    <DiagramCard
+                      title={isPortuguese ? "Circuito Proteus" : "Proteus Circuit"}
+                      caption={
+                        isPortuguese
+                          ? "Circuito embutido pronto para simulação com sensores, indicadores e estágio de controlo."
+                          : "Simulation-ready embedded circuit with sensors, indicators, and control stage."
+                      }
+                      src={project.circuitDesignImage}
+                      alt={`${project.title} circuit design`}
+                      className="aspect-[16/10]"
+                    />
+                  </div>
+                </section>
+
+                {project.physicalPrototypeImage && (
+                  <section aria-labelledby="physical-prototype" className="space-y-6">
+                    <h3 id="physical-prototype" className="text-xl font-semibold">
+                      {isPortuguese
+                        ? "Prototipagem Física e Validação Funcional"
+                        : "Physical Prototype & Functional Validation"}
+                    </h3>
+                    <p className="leading-relaxed text-foreground/75">
+                      {isPortuguese
+                        ? "Além da simulação, o projecto também atingiu a fase funcional de prototipagem física. Um protótipo de bancada real foi construído e testado usando recipientes de água, fiação de sensores, electrónica de controlo e execução de código em tempo real. Esta validação prática ajudou a confirmar a lógica de monitorização esperada, actuador da bomba e viabilidade do sistema de baixo custo."
+                        : "Beyond simulation, the project also reached a functional physical prototyping stage. A real bench prototype was assembled and tested using water containers, sensor wiring, control electronics, and live code execution. This practical validation helped confirm the expected monitoring logic, pump-control behavior, and overall feasibility of the low-cost system design."}
+                    </p>
+                    <DiagramCard
+                      title=""
+                      caption={
+                        isPortuguese
+                          ? "Protótipo funcional usado para validação física da lógica de monitorização do tanque e controlo de bombeamento."
+                          : "Functional prototype used for physical validation of tank-level monitoring and control logic."
+                      }
+                      src={project.physicalPrototypeImage}
+                      alt={`${project.title} physical prototype`}
+                      className="aspect-[3/4] md:aspect-[16/10]"
+                      imageClassName="object-contain p-4 md:p-6"
+                    />
+                  </section>
+                )}
+
+                {project.technicalConstraintsNotes && (
+                  <section
+                    aria-labelledby="technical-constraints"
+                    className="rounded-xl border border-border/40 bg-background/70 p-5 md:p-6"
+                  >
+                    <h3 id="technical-constraints" className="text-base font-semibold text-foreground/90">
+                      {isPortuguese
+                        ? "Restrições Técnicas e Notas Práticas"
+                        : "Technical Constraints & Practical Notes"}
+                    </h3>
+                    <p className="mt-2 text-sm leading-relaxed text-foreground/70">
+                      {project.technicalConstraintsNotes}
+                    </p>
+                  </section>
+                )}
+
+                <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+                  <section
+                    aria-labelledby="tools-tech"
+                    className="rounded-2xl border border-border/50 bg-background p-6"
+                  >
+                    <h3 id="tools-tech" className="mb-4 inline-flex items-center gap-2 text-lg font-semibold">
+                      <Cpu size={18} className="text-accent" />
+                      {isPortuguese ? "Ferramentas e Tecnologias" : "Tools and Technologies"}
+                    </h3>
+                    <ul className="space-y-2">
+                      {project.toolsAndTech.map((tool) => (
+                        <li key={tool} className="flex items-start gap-2 text-sm text-foreground/75">
+                          <CheckCircle2 size={14} className="mt-0.5 shrink-0 text-accent/80" />
+                          {tool}
+                        </li>
+                      ))}
+                    </ul>
+                  </section>
+
+                  <section
+                    aria-labelledby="key-learnings"
+                    className="rounded-2xl border border-border/50 bg-background p-6"
+                  >
+                    <h3 id="key-learnings" className="mb-4 text-lg font-semibold">
+                      {isPortuguese ? "Aprendizagens Principais" : "Key Learnings"}
+                    </h3>
+                    <ul className="space-y-2">
+                      {project.keyLearnings.map((learning) => (
+                        <li key={learning} className="flex items-start gap-2 text-sm text-foreground/75">
+                          <CheckCircle2 size={14} className="mt-0.5 shrink-0 text-accent/80" />
+                          {learning}
+                        </li>
+                      ))}
+                    </ul>
+                  </section>
+                </div>
+              </>
+            )}
 
             <section
-                className="border-y border-border/30 bg-foreground/[0.02] py-14 lg:py-20"
-                aria-labelledby="case-study"
+              aria-labelledby="my-contribution"
+              className={`rounded-3xl border p-6 md:p-10 ${isFlagship
+                ? 'border-accent/40 bg-accent/10 shadow-[0_0_40px_rgba(0,240,255,0.08)]'
+                : 'border-accent/25 bg-accent/5'
+                }`}
             >
-                <Container>
-                    <div className="mx-auto max-w-5xl space-y-14">
-                        <header>
-                            <h2 id="case-study" className="text-2xl font-bold md:text-3xl">
-                                {language === "pt" ? "Estudo de Caso de Engenharia" : "Engineering Case Study"}
-                            </h2>
-                        </header>
-
-                        <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-                            <article className="rounded-2xl border border-border/50 bg-background p-6 md:col-span-3">
-                                <h3 className="text-lg font-semibold">{language === "pt" ? "Resumo" : "Summary"}</h3>
-                                <p className="mt-3 leading-relaxed text-foreground/75">
-                                    {project.overview}
-                                </p>
-                            </article>
-
-                            <article className="rounded-2xl border border-border/50 bg-background p-6 md:col-span-3 lg:col-span-1">
-                                <h3 className="text-lg font-semibold">{language === "pt" ? "Problema" : "Problem"}</h3>
-                                <p className="mt-3 text-sm leading-relaxed text-foreground/75">
-                                    {project.problem}
-                                </p>
-                            </article>
-
-                            <article className="rounded-2xl border border-border/50 bg-background p-6 md:col-span-3 lg:col-span-2">
-                                <h3 className="text-lg font-semibold">{language === "pt" ? "Solução" : "Solution"}</h3>
-                                <p className="mt-3 text-sm leading-relaxed text-foreground/75">
-                                    {project.solution}
-                                </p>
-                            </article>
-                        </div>
-
-                        <section aria-labelledby="control-logic" className="space-y-5">
-                            <h3
-                                id="control-logic"
-                                className="inline-flex items-center gap-2 text-xl font-semibold"
-                            >
-                                <FileCode2 size={18} className="text-accent" />
-                                {language === "pt" ? "Implementação Lógica de Controlo" : "Control Logic Implementation"}
-                            </h3>
-                            <p className="leading-relaxed text-foreground/75">
-                                {project.controlLogicImplementation}
-                            </p>
-                        </section>
-
-                        <section aria-labelledby="diagrams" className="space-y-7">
-                            <h3 id="diagrams" className="text-xl font-semibold">
-                                {language === "pt" ? "Artefactos de Design do Sistema" : "System Design Artifacts"}
-                            </h3>
-                            <DiagramCard
-                                title={language === "pt" ? "Diagrama de Blocos do Sistema" : "System Block Diagram"}
-                                caption={language === "pt" ? "Arquitectura de componentes e fluxo de sinal de alto nível." : "High-level component architecture and signal flow."}
-                                src={project.systemArchitectureImage}
-                                alt={`${project.title} block diagram`}
-                                className="aspect-[16/8]"
-                            />
-                            <div className="grid grid-cols-1 gap-7 lg:grid-cols-2">
-                                <DiagramCard
-                                    title={language === "pt" ? "Fluxograma de Controlo" : "Control Flowchart"}
-                                    caption={language === "pt" ? "Fluxo de decisão para avaliação do estado do sensor e actuador." : "Decision flow for sensor-state evaluation and pump actuation."}
-                                    src={project.controlLogicImage}
-                                    alt={`${project.title} control flowchart`}
-                                    className="aspect-[16/10]"
-                                />
-                                <DiagramCard
-                                    title={language === "pt" ? "Circuito Proteus" : "Proteus Circuit"}
-                                    caption={language === "pt" ? "Circuito embutido pronto para simulação com sensores, indicadores e estágio de controlo." : "Simulation-ready embedded circuit with sensors, indicators, and control stage."}
-                                    src={project.circuitDesignImage}
-                                    alt={`${project.title} Proteus circuit`}
-                                    className="aspect-[16/10]"
-                                />
-                            </div>
-                        </section>
-
-                        {project.physicalPrototypeImage && (
-                            <section aria-labelledby="physical-prototype" className="space-y-6">
-                                <h3 id="physical-prototype" className="text-xl font-semibold">
-                                    {language === "pt" ? "Prototipagem Física e Validação Funcional" : "Physical Prototype & Functional Validation"}
-                                </h3>
-                                <p className="leading-relaxed text-foreground/75">
-                                    {language === "pt"
-                                        ? "Além da simulação, o projecto também atingiu a fase funcional de prototipagem física. Um protótipo de bancada real foi construído e testado usando recipientes de água, fiação de sensores, electrónica de controlo e execução de código em tempo real. Esta validação prática ajudou a confirmar a lógica de monitorização esperada, actuador da bomba e viabilidade do sistema de baixo custo."
-                                        : "Beyond simulation, the project also reached a functional physical prototyping stage. A real bench prototype was assembled and tested using water containers, sensor wiring, control electronics, and live code execution. This practical validation helped confirm the expected monitoring logic, pump-control behavior, and overall feasibility of the low-cost system design."}
-                                </p>
-                                <figure className="space-y-3 rounded-2xl border border-border/50 bg-background p-4 md:p-6">
-                                    <div className="relative aspect-[3/4] w-full overflow-hidden rounded-xl bg-foreground/[0.03] md:aspect-[16/10]">
-                                        <Image
-                                            src={project.physicalPrototypeImage}
-                                            alt={`${project.title} physical prototype`}
-                                            fill
-                                            sizes="(max-width: 1024px) 100vw, 80vw"
-                                            className="object-contain"
-                                        />
-                                    </div>
-                                    <figcaption className="text-sm text-foreground/60">
-                                        {language === "pt" ? "Protótipo funcional usado para validação física da lógica de monitorização do tanque e controlo de bombeamento." : "Functional prototype used for physical validation of tank-level monitoring and control logic."}
-                                    </figcaption>
-                                </figure>
-                            </section>
-                        )}
-
-                        {project.technicalConstraintsNotes && (
-                            <section
-                                aria-labelledby="technical-constraints"
-                                className="rounded-xl border border-border/40 bg-background/70 p-5 md:p-6"
-                            >
-                                <h3 id="technical-constraints" className="text-base font-semibold text-foreground/90">
-                                    {language === "pt" ? "Restrições Técnicas e Notas Práticas" : "Technical Constraints & Practical Notes"}
-                                </h3>
-                                <p className="mt-2 text-sm leading-relaxed text-foreground/70">
-                                    {project.technicalConstraintsNotes}
-                                </p>
-                            </section>
-                        )}
-
-                        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-                            <section
-                                aria-labelledby="tools-tech"
-                                className="rounded-2xl border border-border/50 bg-background p-6"
-                            >
-                                <h3
-                                    id="tools-tech"
-                                    className="mb-4 inline-flex items-center gap-2 text-lg font-semibold"
-                                >
-                                    <Cpu size={18} className="text-accent" />
-                                    {language === "pt" ? "Ferramentas e Tecnologias" : "Tools and Technologies"}
-                                </h3>
-                                <ul className="space-y-2">
-                                    {project.toolsAndTech.map((tool: string) => (
-                                        <li
-                                            key={tool}
-                                            className="flex items-start gap-2 text-sm text-foreground/75"
-                                        >
-                                            <CheckCircle2
-                                                size={14}
-                                                className="mt-0.5 shrink-0 text-accent/80"
-                                            />
-                                            {tool}
-                                        </li>
-                                    ))}
-                                </ul>
-                            </section>
-
-                            <section
-                                aria-labelledby="key-learnings"
-                                className="rounded-2xl border border-border/50 bg-background p-6"
-                            >
-                                <h3 id="key-learnings" className="mb-4 text-lg font-semibold">
-                                    {language === "pt" ? "Aprendizagens Principais" : "Key Learnings"}
-                                </h3>
-                                <ul className="space-y-2">
-                                    {project.keyLearnings.map((learning: string) => (
-                                        <li
-                                            key={learning}
-                                            className="flex items-start gap-2 text-sm text-foreground/75"
-                                        >
-                                            <CheckCircle2
-                                                size={14}
-                                                className="mt-0.5 shrink-0 text-accent/80"
-                                            />
-                                            {learning}
-                                        </li>
-                                    ))}
-                                </ul>
-                            </section>
-                        </div>
-
-                        <section
-                            aria-labelledby="my-contribution"
-                            className="rounded-2xl border border-accent/25 bg-accent/5 p-6"
-                        >
-                            <h3 id="my-contribution" className="text-lg font-semibold">
-                                {language === "pt" ? "A Minha Contribuição" : "My Contribution"}
-                            </h3>
-                            <p className="mt-3 leading-relaxed text-foreground/80">
-                                {project.myContribution}
-                            </p>
-                        </section>
-                    </div>
-                </Container>
+              <h3 id="my-contribution" className="flex items-center gap-2 text-2xl font-bold">
+                <User size={24} className="text-accent" />
+                {isFlagship
+                  ? isPortuguese
+                    ? "O Meu Papel"
+                    : "My Role"
+                  : isPortuguese
+                    ? "A Minha Contribuição"
+                    : "My Contribution"}
+              </h3>
+              <p className="mt-4 max-w-4xl text-base leading-relaxed text-foreground/80 md:text-lg">{project.myContribution}</p>
             </section>
-        </>
-    );
+          </div>
+        </Container>
+      </section>
+    </>
+  );
 }

@@ -54,22 +54,48 @@ export interface AchievementItem {
   workflow?: string;
 }
 
+export interface ProjectImageItem {
+  src: string;
+  caption: string;
+  alt: string;
+}
+
+export interface ProjectMediaSection {
+  text: string;
+  image: string;
+  caption: string;
+  alt: string;
+}
+
 export interface ProjectItem {
   id: string;
   title: string;
   category: string;
+  isFlagship?: boolean;
+  priority?: number;
   typeLabel: string;
   role?: string;
   contributionSummary?: string;
   subtitle: string;
+  shortSummary?: string;
   heroImage: string;
   overview: string;
   problem: string;
   solution: string;
   systemArchitectureImage: string;
+  systemArchitectureCaption?: string;
   controlLogicImage: string;
   circuitDesignImage: string;
   physicalPrototypeImage?: string;
+  functionalPrototypeText?: string;
+  functionalPrototypeImages?: ProjectImageItem[];
+  localDisplayInterface?: ProjectMediaSection;
+  webMonitoringControl?: ProjectMediaSection;
+  sensingAutomationDetail?: ProjectMediaSection;
+  embeddedLogicCommunicationText?: string;
+  keyFeatures?: string[];
+  validationOutcomes?: string;
+  limitationsFutureImprovements?: string;
   myContribution: string;
   toolsAndTech: string[];
   keyLearnings: string[];
@@ -506,10 +532,112 @@ export const profileData: ProfileData = {
   ] as AchievementItem[],
   projects: [
     {
+      id: "iot-residential-energy-monitoring",
+      slug: "iot-residential-energy-monitoring-smart-load-control-system",
+      title: "IoT-Based Residential Energy Monitoring and Smart Load Control System",
+      category: "Flagship Project",
+      isFlagship: true,
+      priority: 100,
+      typeLabel: "Individual Final-Year Engineering Project",
+      role: "Sole Project Engineer · End-to-End System Design, Build, Integration, and Validation",
+      subtitle: "An end-to-end final-year engineering project combining real-time energy measurement, smart load control, local display, and browser-based monitoring in a functional residential prototype.",
+      shortSummary: "A functional smart-home prototype designed to monitor residential electrical consumption, control selected loads, and provide real-time local and browser-based visibility using low-cost embedded hardware.",
+      heroImage: "/projects/pfc/pfc-functional-prototype-lit.jpg",
+      overview: "This final-year engineering project explored a practical IoT approach to residential energy optimization by combining real-time electrical measurement, smart load control, local user feedback, and Wi-Fi-based monitoring in one integrated prototype.",
+      problem: "In many residential environments, energy use is poorly monitored and appliance control is largely manual, making it difficult to detect inefficient consumption or manage loads intelligently. Developed in the Mozambican context, this project explored a practical low-cost proof of concept for improving visibility and control of household energy use.",
+      solution: "The system integrates an Arduino Mega WiFi 2560, electrical sensing modules, relay-based switching, PIR-assisted logic, RTC scheduling, a local graphical display, and an ESP8266 web layer. Together, these modules enable real-time measurement, selective load control, status indication, and local network access through a browser dashboard.",
+      systemArchitectureImage: "/projects/pfc/pfc-system-architecture.png",
+      systemArchitectureCaption: "System-level wiring and integration diagram showing sensing, control, display, switching, and connected loads.",
+      controlLogicImage: "/projects/pfc/pfc-system-architecture.png",
+      circuitDesignImage: "/projects/pfc/pfc-prototype-top-view.jpg",
+      physicalPrototypeImage: "/projects/pfc/pfc-functional-prototype-lit.jpg",
+      functionalPrototypeText: "The project progressed beyond simulation into a fully assembled physical prototype. The bench-scale setup integrated loads, sensors, relays, a display interface, and the embedded control hardware into a demonstrable smart-home proof of concept.",
+      functionalPrototypeImages: [
+        {
+          src: "/projects/pfc/pfc-prototype-top-view.jpg",
+          caption: "Top-view of the integrated hardware prototype",
+          alt: "Top-view of the IoT residential energy monitoring hardware prototype",
+        },
+        {
+          src: "/projects/pfc/pfc-functional-prototype-lit.jpg",
+          caption: "Functional demonstration with connected residential loads",
+          alt: "Functional prototype demonstration with connected loads",
+        },
+      ],
+      localDisplayInterface: {
+        text: "A local graphical display was implemented to provide real-time visibility of voltage, current, total power, per-load consumption, and time information directly on the prototype.",
+        image: "/projects/pfc/pfc-display-interface-closeup.jpg",
+        caption: "Real-time local monitoring interface showing electrical measurements and load data.",
+        alt: "Local display interface showing real-time electrical measurements",
+      },
+      webMonitoringControl: {
+        text: "A browser-based local dashboard was developed through the ESP8266 communication layer, allowing real-time monitoring and manual switching of selected loads over the local Wi-Fi network.",
+        image: "/projects/pfc/pfc-web-dashboard.png",
+        caption: "Local web dashboard for real-time monitoring and control.",
+        alt: "Local web dashboard used for monitoring and controlling loads",
+      },
+      sensingAutomationDetail: {
+        text: "The prototype also incorporated presence-based logic and environmental interaction through additional sensing elements, supporting context-aware automation behavior.",
+        image: "/projects/pfc/pfc-pir-sensing-detail.jpg",
+        caption: "Detail view of the sensing and control subsystem.",
+        alt: "PIR sensing and automation subsystem detail",
+      },
+      embeddedLogicCommunicationText: "The system was programmed across two coordinated embedded layers: the Arduino Mega WiFi 2560 handled sensing, electrical calculations, RTC timekeeping, local display output, status indication, and relay control; the ESP8266 web layer handled Wi-Fi connectivity, browser serving, real-time WebSocket updates, and remote command exchange.",
+      keyFeatures: [
+        "Real-time voltage, current, and power monitoring",
+        "Per-load visibility for selected residential loads",
+        "Relay-based load control",
+        "Local graphical display interface",
+        "Browser-based monitoring and switching over local Wi-Fi",
+        "RTC-assisted time-based behavior",
+        "Presence-aware automation through PIR sensing",
+        "Physical prototype validation",
+      ],
+      validationOutcomes: "The project was validated through a functional physical prototype and integrated testing of sensing, display, communication, and control behavior. The final system demonstrated practical visibility of load consumption, successful relay actuation, real-time local display updates, and browser-based interaction through the Wi-Fi interface.",
+      limitationsFutureImprovements: "This prototype was developed as a low-cost proof of concept and therefore remained limited to a local Wi-Fi environment, prototype-scale hardware assembly, and basic dashboard interaction. Future improvements could include persistent historical logging, cloud connectivity, stronger electrical packaging, richer analytics, and broader real-home deployment validation.",
+      myContribution: "I designed, built, programmed, integrated, tested, and documented the entire system as an individual final-year engineering project. My work covered hardware architecture, component selection, wiring design, embedded logic, sensing integration, display implementation, relay control, Wi-Fi communication, browser-based monitoring, prototype assembly, and final technical documentation.",
+      toolsAndTech: [
+        "Arduino Mega WiFi 2560",
+        "ESP8266",
+        "ACS712",
+        "ZMPT101B",
+        "PIR Sensor",
+        "RTC Module",
+        "Graphic LCD 128x64",
+        "Relay Module",
+        "Arduino C/C++",
+        "HTML/CSS/JavaScript",
+        "WebSockets",
+        "Fritzing",
+        "IoT",
+        "Smart Home",
+        "Energy Monitoring",
+      ],
+      keyLearnings: [
+        "End-to-end embedded and IoT system integration",
+        "Real-time electrical sensing and load-level visibility design",
+        "Embedded-to-web communication architecture with WebSockets",
+        "Hardware and software co-validation through physical prototyping",
+        "Low-cost smart-home engineering for practical local deployment",
+      ],
+      controlLogicImplementation: "Core control logic coordinated electrical measurement, relay switching, display refresh, and network state synchronization through structured embedded routines across Arduino Mega and ESP8266 layers.",
+      badges: [
+        "Flagship Project",
+        "IoT",
+        "Energy Monitoring",
+        "Smart Home",
+        "Arduino Mega WiFi 2560",
+        "ESP8266",
+        "WebSockets",
+        "Physical Prototype",
+      ],
+    },
+    {
       id: "residential-water-tank",
       slug: "residential-water-tank-monitoring-pump-control-system",
       title: "Residential Water Tank Monitoring and Pump Control System",
       category: "Featured Project",
+      priority: 50,
       typeLabel: "Academic Group Project",
       role: "Project Lead · Embedded Programming · Final Integration & Testing",
       contributionSummary: "Developed as a university group project, with my primary contribution centered on project leadership, embedded programming, final system integration, and functional testing.",

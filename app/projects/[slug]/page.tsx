@@ -1,15 +1,5 @@
 import type { Metadata } from "next";
-import Image from "next/image";
-import Link from "next/link";
 import { notFound } from "next/navigation";
-import {
-  ArrowLeft,
-  CheckCircle2,
-  ChevronRight,
-  Cpu,
-  FileCode2,
-  Layers3,
-} from "lucide-react";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { profileDictionary } from "@/components/data/dictionary";
@@ -18,6 +8,23 @@ import { ProjectContent } from "./ProjectContent";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
+}
+
+function getSafeImageSrc(src: unknown): string | null {
+  if (typeof src === "string") {
+    const trimmed = src.trim();
+    return trimmed.length > 0 ? trimmed : null;
+  }
+
+  if (src && typeof src === "object" && "src" in src) {
+    const nested = (src as { src?: unknown }).src;
+    if (typeof nested === "string") {
+      const trimmed = nested.trim();
+      return trimmed.length > 0 ? trimmed : null;
+    }
+  }
+
+  return null;
 }
 
 function getProjectBySlug(slug: string): ProjectItem | undefined {
@@ -68,13 +75,15 @@ export async function generateMetadata({
     };
   }
 
+  const heroImage = getSafeImageSrc(project.heroImage);
+
   return {
     title: `${project.title} | Featured Project`,
     description: project.subtitle,
     openGraph: {
       title: project.title,
       description: project.subtitle,
-      images: [{ url: project.heroImage }],
+      images: heroImage ? [{ url: heroImage }] : undefined,
     },
   };
 }
