@@ -13,8 +13,13 @@ import {
   Wifi,
   MonitorSmartphone,
   CheckSquare,
-  Network
+  Network,
+  BookOpen,
+  Lock,
+  FileText,
+  X
 } from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
 import { useState, type FormEvent } from "react";
 import { Container } from "@/components/layout/Container";
 import { useLanguage } from "@/components/context/LanguageContext";
@@ -326,30 +331,43 @@ export function ProjectContent({ slug, initialProject }: ProjectContentProps) {
                 {documentAccess && (
                   <section
                     aria-labelledby="project-document-access"
-                    className="rounded-2xl border border-accent/25 bg-accent/5 p-6"
+                    className="relative overflow-hidden rounded-2xl border border-accent/20 bg-gradient-to-br from-accent/5 via-background to-background p-6 md:p-8 shadow-[0_4px_20px_rgba(0,0,0,0.02)]"
                   >
-                    <h3 id="project-document-access" className="text-lg font-semibold">
-                      {isPortuguese ? "Acesso a Documentação" : "Project Documentation Access"}
-                    </h3>
-                    <p className="mt-3 text-sm leading-relaxed text-foreground/75">
-                      {documentAccess.availabilityNote}
-                    </p>
-                    <div className="mt-5 flex flex-wrap gap-3">
-                      <a
-                        href={documentAccess.brief.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center justify-center rounded-lg border border-accent/40 bg-accent/15 px-4 py-2.5 text-sm font-semibold text-accent transition-colors hover:bg-accent/25"
-                      >
-                        {documentAccess.brief.label}
-                      </a>
-                      <button
-                        type="button"
-                        onClick={openThesisRequest}
-                        className="inline-flex items-center justify-center rounded-lg border border-border/60 bg-background px-4 py-2.5 text-sm font-semibold text-foreground/85 transition-colors hover:border-accent/30 hover:text-accent"
-                      >
-                        {documentAccess.fullThesisRequest.label}
-                      </button>
+                    <div className="flex flex-col md:flex-row md:items-start justify-between gap-8">
+                      <div className="max-w-2xl">
+                        <h3 id="project-document-access" className="flex items-center gap-2.5 text-xl font-bold tracking-tight">
+                          <BookOpen className="text-accent" size={22} />
+                          {isPortuguese ? "Acesso à Documentação do Projecto" : "Project Documentation Access"}
+                        </h3>
+                        <p className="mt-3 text-base leading-relaxed text-foreground/80">
+                          {documentAccess.availabilityNote}
+                        </p>
+                        <p className="mt-2.5 text-sm text-foreground/50">
+                          {isPortuguese
+                            ? "O acesso à tese completa é gerido por solicitação para manter o portfólio conciso, apoiando simultaneamente a revisão técnica aprofundada."
+                            : "Full thesis access is handled on request to keep the portfolio page concise while still supporting deeper academic or technical review."}
+                        </p>
+                      </div>
+
+                      <div className="flex w-full shrink-0 flex-col gap-3 md:w-auto md:min-w-[260px]">
+                        <a
+                          href={documentAccess.brief.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="group flex w-full items-center justify-center gap-2.5 rounded-xl bg-accent px-5 py-3.5 text-sm font-semibold tracking-wide text-background transition-all hover:bg-accent/90 shadow-[0_0_20px_rgba(0,240,255,0.15)]"
+                        >
+                          <FileText size={18} className="transition-transform group-hover:-translate-y-0.5" />
+                          {documentAccess.brief.label}
+                        </a>
+                        <button
+                          type="button"
+                          onClick={openThesisRequest}
+                          className="group flex w-full items-center justify-center gap-2.5 rounded-xl border border-accent/30 bg-background px-5 py-3.5 text-sm font-semibold tracking-wide text-foreground/90 transition-all hover:border-accent hover:bg-accent/5"
+                        >
+                          <Lock size={16} className="text-accent/70 transition-colors group-hover:text-accent" />
+                          {documentAccess.fullThesisRequest.label}
+                        </button>
+                      </div>
                     </div>
                   </section>
                 )}
@@ -727,146 +745,167 @@ export function ProjectContent({ slug, initialProject }: ProjectContentProps) {
         </Container>
       </section>
 
-      {isThesisRequestOpen && documentAccess?.fullThesisRequest && (
-        <div className="fixed inset-0 z-[120] flex items-center justify-center p-4 sm:p-6">
-          <button
-            type="button"
-            aria-label={isPortuguese ? "Fechar pedido de tese" : "Close thesis request"}
-            onClick={closeThesisRequest}
-            className="absolute inset-0 bg-background/70 backdrop-blur-[2px]"
-          />
-          <section
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="thesis-request-title"
-            className="relative z-10 w-full max-w-2xl max-h-[92dvh] overflow-y-auto rounded-2xl border border-border/60 bg-background p-6 shadow-2xl md:p-8"
-          >
-            <div className="flex items-start justify-between gap-4">
-              <div>
-                <h3 id="thesis-request-title" className="text-xl font-semibold">
-                  {documentAccess.fullThesisRequest.label}
-                </h3>
-                <p className="mt-2 text-sm leading-relaxed text-foreground/70">
-                  {documentAccess.fullThesisRequest.helperText}
-                </p>
-              </div>
-              <button
-                type="button"
-                onClick={closeThesisRequest}
-                className="rounded-md border border-border/50 px-3 py-1.5 text-xs font-medium text-foreground/75 transition-colors hover:border-accent/30 hover:text-accent"
-              >
-                {isPortuguese ? "Fechar" : "Close"}
-              </button>
-            </div>
-
-            <form onSubmit={handleThesisRequestSubmit} className="mt-6 space-y-4">
-              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                <label className="space-y-1.5 text-sm">
-                  <span className="font-medium text-foreground/85">Full name *</span>
-                  <input
-                    value={thesisRequestForm.fullName}
-                    onChange={(event) => handleRequestFieldChange("fullName", event.target.value)}
-                    className="w-full rounded-lg border border-border/60 bg-background px-3 py-2.5 text-sm text-foreground outline-none transition-colors focus:border-accent/50"
-                    required
-                  />
-                  {formErrors.fullName && <span className="text-xs text-red-500">{formErrors.fullName}</span>}
-                </label>
-
-                <label className="space-y-1.5 text-sm">
-                  <span className="font-medium text-foreground/85">Email address *</span>
-                  <input
-                    type="email"
-                    value={thesisRequestForm.email}
-                    onChange={(event) => handleRequestFieldChange("email", event.target.value)}
-                    className="w-full rounded-lg border border-border/60 bg-background px-3 py-2.5 text-sm text-foreground outline-none transition-colors focus:border-accent/50"
-                    required
-                  />
-                  {formErrors.email && <span className="text-xs text-red-500">{formErrors.email}</span>}
-                </label>
-              </div>
-
-              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                <label className="space-y-1.5 text-sm">
-                  <span className="font-medium text-foreground/85">Organization / University / Company</span>
-                  <input
-                    value={thesisRequestForm.organization}
-                    onChange={(event) => handleRequestFieldChange("organization", event.target.value)}
-                    className="w-full rounded-lg border border-border/60 bg-background px-3 py-2.5 text-sm text-foreground outline-none transition-colors focus:border-accent/50"
-                  />
-                </label>
-
-                <label className="space-y-1.5 text-sm">
-                  <span className="font-medium text-foreground/85">Role / Title</span>
-                  <input
-                    value={thesisRequestForm.roleTitle}
-                    onChange={(event) => handleRequestFieldChange("roleTitle", event.target.value)}
-                    className="w-full rounded-lg border border-border/60 bg-background px-3 py-2.5 text-sm text-foreground outline-none transition-colors focus:border-accent/50"
-                  />
-                </label>
-              </div>
-
-              <label className="space-y-1.5 text-sm">
-                <span className="font-medium text-foreground/85">Reason for requesting the full thesis *</span>
-                <textarea
-                  value={thesisRequestForm.requestReason}
-                  onChange={(event) => handleRequestFieldChange("requestReason", event.target.value)}
-                  rows={3}
-                  className="w-full rounded-lg border border-border/60 bg-background px-3 py-2.5 text-sm text-foreground outline-none transition-colors focus:border-accent/50"
-                  required
-                />
-                {formErrors.requestReason && <span className="text-xs text-red-500">{formErrors.requestReason}</span>}
-              </label>
-
-              <label className="space-y-1.5 text-sm">
-                <span className="font-medium text-foreground/85">Intended use of the document *</span>
-                <textarea
-                  value={thesisRequestForm.intendedUse}
-                  onChange={(event) => handleRequestFieldChange("intendedUse", event.target.value)}
-                  rows={3}
-                  className="w-full rounded-lg border border-border/60 bg-background px-3 py-2.5 text-sm text-foreground outline-none transition-colors focus:border-accent/50"
-                  required
-                />
-                {formErrors.intendedUse && <span className="text-xs text-red-500">{formErrors.intendedUse}</span>}
-              </label>
-
-              <label className="space-y-1.5 text-sm">
-                <span className="font-medium text-foreground/85">Phone or LinkedIn</span>
-                <input
-                  value={thesisRequestForm.phoneOrLinkedIn}
-                  onChange={(event) => handleRequestFieldChange("phoneOrLinkedIn", event.target.value)}
-                  className="w-full rounded-lg border border-border/60 bg-background px-3 py-2.5 text-sm text-foreground outline-none transition-colors focus:border-accent/50"
-                />
-              </label>
-
-              <p className="text-xs text-foreground/65">
-                {documentAccess.fullThesisRequest.approvalNote}
-              </p>
-
-              <div className="flex flex-wrap items-center gap-3 pt-1">
-                <button
-                  type="submit"
-                  className="inline-flex items-center justify-center rounded-lg border border-accent/40 bg-accent/15 px-4 py-2.5 text-sm font-semibold text-accent transition-colors hover:bg-accent/25"
-                >
-                  {isPortuguese ? "Enviar Pedido" : "Submit Request"}
-                </button>
+      <AnimatePresence>
+        {isThesisRequestOpen && documentAccess?.fullThesisRequest && (
+          <div className="fixed inset-0 z-[120] flex items-center justify-center p-4 sm:p-6">
+            <motion.button
+              type="button"
+              aria-label={isPortuguese ? "Fechar pedido de tese" : "Close thesis request"}
+              onClick={closeThesisRequest}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="absolute inset-0 bg-background/80 backdrop-blur-md cursor-default"
+            />
+            <motion.section
+              initial={{ opacity: 0, y: 15, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 10, scale: 0.98 }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="thesis-request-title"
+              className="relative z-10 w-full max-w-2xl max-h-[92dvh] overflow-y-auto rounded-3xl border border-accent/20 bg-background p-6 shadow-2xl md:p-8"
+            >
+              <div className="mb-7 flex items-start justify-between gap-4 border-b border-border/50 pb-6">
+                <div className="flex items-center gap-4">
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-accent/10 border border-accent/20">
+                    <Lock className="text-accent" size={22} />
+                  </div>
+                  <div>
+                    <h3 id="thesis-request-title" className="text-xl font-bold tracking-tight text-foreground/95">
+                      {documentAccess.fullThesisRequest.label}
+                    </h3>
+                    <p className="mt-1 text-sm text-foreground/60 leading-relaxed md:pr-4">
+                      {documentAccess.fullThesisRequest.helperText}
+                    </p>
+                  </div>
+                </div>
                 <button
                   type="button"
                   onClick={closeThesisRequest}
-                  className="inline-flex items-center justify-center rounded-lg border border-border/60 bg-background px-4 py-2.5 text-sm font-medium text-foreground/75 transition-colors hover:border-accent/30 hover:text-accent"
+                  className="rounded-full bg-foreground/5 p-2.5 text-foreground/60 transition-colors hover:bg-accent/10 hover:text-accent"
+                  title={isPortuguese ? "Fechar" : "Close"}
                 >
-                  {isPortuguese ? "Cancelar" : "Cancel"}
+                  <X size={20} />
                 </button>
               </div>
 
-              {requestSubmitted && (
-                <p className="text-sm text-accent">
-                  {documentAccess.fullThesisRequest.approvalNote}
-                </p>
-              )}
-            </form>
-          </section>
-        </div>
-      )}
+              <form onSubmit={handleThesisRequestSubmit} className="space-y-6">
+                <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+                  <label className="space-y-2 text-sm">
+                    <span className="font-semibold text-foreground/80">Full name <span className="text-accent">*</span></span>
+                    <input
+                      value={thesisRequestForm.fullName}
+                      onChange={(event) => handleRequestFieldChange("fullName", event.target.value)}
+                      className="w-full rounded-xl border border-border/60 bg-foreground/[0.03] px-4 py-3 text-sm text-foreground outline-none transition-all placeholder:text-foreground/40 focus:border-accent/50 focus:bg-background focus:ring-4 focus:ring-accent/10"
+                      placeholder="e.g. Jane Doe"
+                      required
+                    />
+                    {formErrors.fullName && <span className="text-xs font-medium text-red-500">{formErrors.fullName}</span>}
+                  </label>
+
+                  <label className="space-y-2 text-sm">
+                    <span className="font-semibold text-foreground/80">Email address <span className="text-accent">*</span></span>
+                    <input
+                      type="email"
+                      value={thesisRequestForm.email}
+                      onChange={(event) => handleRequestFieldChange("email", event.target.value)}
+                      className="w-full rounded-xl border border-border/60 bg-foreground/[0.03] px-4 py-3 text-sm text-foreground outline-none transition-all placeholder:text-foreground/40 focus:border-accent/50 focus:bg-background focus:ring-4 focus:ring-accent/10"
+                      placeholder="name@company.com"
+                      required
+                    />
+                    {formErrors.email && <span className="text-xs font-medium text-red-500">{formErrors.email}</span>}
+                  </label>
+                </div>
+
+                <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+                  <label className="space-y-2 text-sm">
+                    <span className="font-semibold text-foreground/80">Organization / University / Company</span>
+                    <input
+                      value={thesisRequestForm.organization}
+                      onChange={(event) => handleRequestFieldChange("organization", event.target.value)}
+                      className="w-full rounded-xl border border-border/60 bg-foreground/[0.03] px-4 py-3 text-sm text-foreground outline-none transition-all placeholder:text-foreground/40 focus:border-accent/50 focus:bg-background focus:ring-4 focus:ring-accent/10"
+                      placeholder="Company or Institution Name"
+                    />
+                  </label>
+
+                  <label className="space-y-2 text-sm">
+                    <span className="font-semibold text-foreground/80">Role / Title</span>
+                    <input
+                      value={thesisRequestForm.roleTitle}
+                      onChange={(event) => handleRequestFieldChange("roleTitle", event.target.value)}
+                      className="w-full rounded-xl border border-border/60 bg-foreground/[0.03] px-4 py-3 text-sm text-foreground outline-none transition-all placeholder:text-foreground/40 focus:border-accent/50 focus:bg-background focus:ring-4 focus:ring-accent/10"
+                      placeholder="e.g. Technical Recruiter"
+                    />
+                  </label>
+                </div>
+
+                <label className="space-y-2 text-sm">
+                  <span className="font-semibold text-foreground/80">Reason for requesting the full thesis <span className="text-accent">*</span></span>
+                  <textarea
+                    value={thesisRequestForm.requestReason}
+                    onChange={(event) => handleRequestFieldChange("requestReason", event.target.value)}
+                    rows={2}
+                    className="w-full resize-none rounded-xl border border-border/60 bg-foreground/[0.03] px-4 py-3 text-sm text-foreground outline-none transition-all placeholder:text-foreground/40 focus:border-accent/50 focus:bg-background focus:ring-4 focus:ring-accent/10"
+                    placeholder="Briefly explain your interest..."
+                    required
+                  />
+                  {formErrors.requestReason && <span className="text-xs font-medium text-red-500">{formErrors.requestReason}</span>}
+                </label>
+
+                <label className="space-y-2 text-sm">
+                  <span className="font-semibold text-foreground/80">Intended use of the document <span className="text-accent">*</span></span>
+                  <textarea
+                    value={thesisRequestForm.intendedUse}
+                    onChange={(event) => handleRequestFieldChange("intendedUse", event.target.value)}
+                    rows={2}
+                    className="w-full resize-none rounded-xl border border-border/60 bg-foreground/[0.03] px-4 py-3 text-sm text-foreground outline-none transition-all placeholder:text-foreground/40 focus:border-accent/50 focus:bg-background focus:ring-4 focus:ring-accent/10"
+                    placeholder="e.g. Evaluating for a technical role..."
+                    required
+                  />
+                  {formErrors.intendedUse && <span className="text-xs font-medium text-red-500">{formErrors.intendedUse}</span>}
+                </label>
+
+                <label className="space-y-2 text-sm">
+                  <span className="font-semibold text-foreground/80">Phone or LinkedIn <span className="text-foreground/50 font-normal pl-1">(Optional)</span></span>
+                  <input
+                    value={thesisRequestForm.phoneOrLinkedIn}
+                    onChange={(event) => handleRequestFieldChange("phoneOrLinkedIn", event.target.value)}
+                    className="w-full rounded-xl border border-border/60 bg-foreground/[0.03] px-4 py-3 text-sm text-foreground outline-none transition-all placeholder:text-foreground/40 focus:border-accent/50 focus:bg-background focus:ring-4 focus:ring-accent/10"
+                    placeholder="https://linkedin.com/in/your-profile"
+                  />
+                </label>
+
+                <div className="mt-8 flex flex-col items-center justify-between gap-5 rounded-2xl bg-foreground/[0.02] p-5 sm:flex-row border border-border/30">
+                  <p className="max-w-[17rem] text-xs leading-relaxed text-foreground/60 sm:max-w-[18rem]">
+                    <span className="text-foreground/80 font-semibold">{isPortuguese ? "Nota: " : "Note: "}</span>
+                    {documentAccess.fullThesisRequest.approvalNote}
+                  </p>
+                  <button
+                    type="submit"
+                    className="group flex w-full items-center justify-center gap-2 rounded-xl bg-foreground px-7 py-3.5 text-sm font-semibold tracking-wide text-background shadow-lg transition-all hover:scale-[1.02] hover:bg-foreground/90 hover:shadow-xl sm:w-auto"
+                  >
+                    {isPortuguese ? "Enviar Pedido Seguro" : "Submit Secure Request"}
+                    <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                  </button>
+                </div>
+
+                {requestSubmitted && (
+                  <motion.p
+                    initial={{ opacity: 0, y: 5 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="text-center text-sm font-medium text-accent pt-2"
+                  >
+                    {isPortuguese ? "A preparar o seu cliente de email..." : "Preparing your email client..."}
+                  </motion.p>
+                )}
+              </form>
+            </motion.section>
+          </div>
+        )}
+      </AnimatePresence>
     </>
   );
 }
