@@ -172,72 +172,76 @@ export function Header() {
 
                         <AnimatePresence>
                             {isMenuOpen && (
-                                <motion.div
-                                    id="mobile-navigation"
-                                    initial={{ opacity: 0, y: -20 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    exit={{ opacity: 0, y: -20, transition: { duration: 0.2, ease: "easeIn" } }}
-                                    transition={{ duration: 0.3, ease: "easeOut" }}
-                                    className="fixed inset-0 z-[100] bg-background/98 backdrop-blur-2xl flex flex-col"
-                                >
-                                    <div className="flex justify-end p-5 pt-8">
-                                        <Button
-                                            variant="ghost"
-                                            size="sm"
-                                            onClick={() => setIsMenuOpen(false)}
-                                            aria-label="Close menu"
-                                            className="mr-1"
-                                        >
-                                            <X size={24} />
-                                        </Button>
-                                    </div>
-                                    <div className="flex-1 flex flex-col justify-center items-center pb-24 overflow-y-auto">
-                                        <nav className="flex flex-col gap-7 items-center text-center">
-                                            {navLinks.map((link: NavItem, i: number) => (
+                                <>
+                                    <motion.button
+                                        type="button"
+                                        aria-label="Close menu backdrop"
+                                        initial={{ opacity: 0 }}
+                                        animate={{ opacity: 1 }}
+                                        exit={{ opacity: 0 }}
+                                        transition={{ duration: 0.3 }}
+                                        onClick={() => setIsMenuOpen(false)}
+                                        className="fixed inset-0 z-[60] bg-background/60 backdrop-blur-sm"
+                                    />
+                                    <motion.div
+                                        id="mobile-navigation"
+                                        initial={{ x: "100%" }}
+                                        animate={{ x: 0 }}
+                                        exit={{ x: "100%", transition: { duration: 0.3, ease: "easeInOut" } }}
+                                        transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                                        className="fixed inset-y-0 right-0 z-[100] w-[85vw] max-w-sm bg-background/95 backdrop-blur-3xl border-l border-border/80 shadow-2xl flex flex-col"
+                                    >
+                                        <div className="flex justify-end p-5 pt-7">
+                                            <Button
+                                                variant="ghost"
+                                                size="sm"
+                                                onClick={() => setIsMenuOpen(false)}
+                                                aria-label="Close menu"
+                                            >
+                                                <X size={24} />
+                                            </Button>
+                                        </div>
+                                        <div className="flex-1 flex flex-col px-8 pb-10 overflow-y-auto">
+                                            <nav className="flex flex-col gap-6 mt-4">
+                                                {navLinks.map((link: NavItem, i: number) => (
+                                                    <motion.div
+                                                        key={link.label}
+                                                        initial={{ opacity: 0, x: 20 }}
+                                                        animate={{ opacity: 1, x: 0 }}
+                                                        transition={{ delay: 0.1 + i * 0.05, duration: 0.4 }}
+                                                    >
+                                                        <Link
+                                                            href={link.href}
+                                                            onClick={() => handleNavClick(link.href)}
+                                                            className={cn(
+                                                                "flex items-center text-xl font-medium tracking-tight transition-colors py-2 relative",
+                                                                activeSection === link.href.replace("#", "")
+                                                                    ? "text-accent border-l-2 border-accent pl-4 -ml-4"
+                                                                    : "text-foreground/90 hover:text-accent pl-2 -ml-2"
+                                                            )}
+                                                        >
+                                                            {link.label}
+                                                        </Link>
+                                                    </motion.div>
+                                                ))}
                                                 <motion.div
-                                                    key={link.label}
                                                     initial={{ opacity: 0, y: 20 }}
                                                     animate={{ opacity: 1, y: 0 }}
-                                                    transition={{ delay: 0.05 + i * 0.04, duration: 0.4 }}
+                                                    transition={{ delay: 0.2 + navLinks.length * 0.05, duration: 0.4 }}
+                                                    className="mt-8 pt-8 border-t border-border/50"
                                                 >
-                                                    <Link
-                                                        href={link.href}
-                                                        onClick={() => handleNavClick(link.href)}
-                                                        className={cn(
-                                                            "text-2xl sm:text-3xl font-semibold tracking-tight transition-colors relative",
-                                                            activeSection === link.href.replace("#", "")
-                                                                ? "text-accent"
-                                                                : "text-foreground/90 hover:text-accent"
-                                                        )}
+                                                    <a
+                                                        href="/cv-ziyad-adamo.pdf"
+                                                        download
+                                                        className="flex items-center justify-center w-full rounded-xl border border-accent/40 bg-accent/10 px-6 py-4 text-base font-semibold text-accent hover:bg-accent/20 transition-all shadow-[0_0_15px_rgba(0,240,255,0.08)]"
                                                     >
-                                                        {link.label}
-                                                        {activeSection === link.href.replace("#", "") && (
-                                                            <motion.span
-                                                                layoutId="activeMobileSection"
-                                                                className="absolute -bottom-2 left-1/2 -translate-x-1/2 h-[3px] w-8 rounded-full bg-accent"
-                                                                transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                                                            />
-                                                        )}
-                                                    </Link>
+                                                        {t.ui.heroSecondaryCta}
+                                                    </a>
                                                 </motion.div>
-                                            ))}
-                                            <motion.div
-                                                initial={{ opacity: 0, y: 20 }}
-                                                animate={{ opacity: 1, y: 0 }}
-                                                transition={{ delay: 0.1 + navLinks.length * 0.04, duration: 0.4 }}
-                                                className="mt-8"
-                                            >
-                                                <a
-                                                    href="/cv-ziyad-adamo.pdf"
-                                                    download
-                                                    className="inline-flex items-center justify-center rounded-full border border-accent/40 bg-accent/10 px-8 py-3.5 text-lg font-medium text-accent hover:bg-accent/20 transition-all shadow-[0_0_15px_rgba(0,240,255,0.1)]"
-                                                >
-                                                    {t.ui.heroSecondaryCta}
-                                                </a>
-                                            </motion.div>
-                                        </nav>
-                                    </div>
-                                </motion.div>
+                                            </nav>
+                                        </div>
+                                    </motion.div>
+                                </>
                             )}
                         </AnimatePresence>
                     </div>
