@@ -219,7 +219,7 @@ export const profileData: ProfileData = {
     fullName: "Ziyad Ussene Adamo",
     headline: "Electronic & Telecommunications Engineer",
     subheadline:
-      "Bachelor's graduate with hands-on experience in IoT, automation, telecommunications systems, and energy optimization projects.",
+      "Bachelor's graduate with hands-on experience in IoT, automation, telecommunications systems, energy optimization projects, and AI workflows.",
     location: "Maputo, Mozambique",
     email: "ziyadadamo58@gmail.com",
     phoneNumbers: ["+258 87 086 4573", "+258 83 332 4075", "+258 84 295 3132"],

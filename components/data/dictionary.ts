@@ -27,7 +27,7 @@ export const profileDictionary: Record<string, ProfileData> = {
             fullName: "Ziyad Ussene Adamo",
             headline: "Engenheiro Electrotécnico e de Telecomunicações",
             subheadline:
-                "Licenciado com experiência prática em projectos de IoT, automação, sistemas de telecomunicações e optimização de energia.",
+                "Licenciado com experiência prática em projectos de IoT, automação, sistemas de telecomunicações, optimização de energia e fluxos de trabalho com IA.",
             location: "Maputo, Moçambique",
             email: "ziyadadamo58@gmail.com",
             phoneNumbers: ["+258 87 086 4573", "+258 83 332 4075", "+258 84 295 3132"],
